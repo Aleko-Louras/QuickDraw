@@ -5,15 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.quckdraw.R
+import androidx.fragment.app.activityViewModels
+import com.example.quckdraw.databinding.FragmentDisplayBinding
 
 class DisplayFragment : Fragment() {
+
+    private lateinit var binding: FragmentDisplayBinding
+    private val viewModel: DrawingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_display, container, false)
+    ): View {
+        binding = FragmentDisplayBinding.inflate(inflater)
+        binding.drawingView.setViewModel(viewModel)
+
+        return binding.root
     }
 }
