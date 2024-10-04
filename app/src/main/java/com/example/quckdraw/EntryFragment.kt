@@ -1,6 +1,7 @@
 package com.example.quckdraw  // Corrected package name
 
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,15 +22,17 @@ class EntryFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment using ViewBinding
         val binding = FragmentEntryBinding.inflate(inflater, container, false)
-        binding.enterDrawingButton.setOnClickListener {
-            Log.e("entry frag", "navigating")
-            findNavController().navigate(R.id.action_enter_drawing_submitted)
-        }
 
-        // Set click listener for the submit button
-
+        android.os.Handler(Looper.getMainLooper()).postDelayed({
+            navigateToDrawFragment()
+        }, 2000)
 
         Log.e("entry fragment", "here it is")
         return binding.root
+    }
+
+    private fun navigateToDrawFragment(){
+        Log.e("entry frag", "navigating")
+        findNavController().navigate(R.id.action_enter_drawing_submitted)
     }
 }
