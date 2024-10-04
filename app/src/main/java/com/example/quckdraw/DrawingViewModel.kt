@@ -70,18 +70,8 @@ class DrawingViewModel : ViewModel(){
         _penLiveData.value = pen
     }
 
-//    private fun drawShape(shape: Shape) {
-//        when (shape) {
-//            Shape.CIRCLE -> {
-//                val lastX = currentPath.lastPointX
-//                val lastY = currentPath.lastPointY
-//                val radius = _pen.value?.size ?: 10f
-//                canvas.drawCircle(lastX, lastY, radius, paint)
-//            }
-//            Shape.LINE -> {
-//                canvas.drawPath(currentPath, paint)
-//            }
-//        }
-//    }
+    fun getNumberOfPaths() : Int{
+        return paths.size
+    }
 
 }
