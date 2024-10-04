@@ -9,6 +9,15 @@ import androidx.lifecycle.ViewModel
 import android.graphics.Path
 import android.graphics.Paint
 
+data class Pen(
+    var color: Int = Color.BLUE,
+    var size: Float = 10f
+)
+
+enum class Shape {
+    CIRCLE, LINE
+}
+
 class DrawingViewModel : ViewModel(){
 
     private val drawingWidth = 800
@@ -19,21 +28,18 @@ class DrawingViewModel : ViewModel(){
     private val _bitmap = Bitmap.createBitmap(drawingWidth, drawingHeight, Bitmap.Config.ARGB_8888)
     private val canvas = Canvas(_bitmap)
     private val paint: Paint = Paint().apply {
-        color = Color.BLUE
         style = Paint.Style.STROKE
-        strokeWidth = 10f
         isAntiAlias = true
     }
+
+    // Keep track of pen properties with the pen
+    private var pen = Pen()
+    private val _penLiveData = MutableLiveData(pen)
+    val penLiveData: LiveData<Pen> = _penLiveData
+
+    // Store all the paths of the drawing as a list
     private var currentPath: Path = Path()
-
-    // Store all the paths of the drawing as a list 
     private val paths: MutableList<Path> = mutableListOf()
-
-    private val _penColor : MutableLiveData<Color> = MutableLiveData(Color.valueOf(0f, 0f, 1f))
-    val penColor = _penColor as LiveData<Color>
-    private val _penSize = MutableLiveData(10f)
-    val penSize = _penSize as LiveData<Float>
-
 
     // Start a new path and move to the touch position
     fun startPath(x: Float, y: Float) {
@@ -45,27 +51,37 @@ class DrawingViewModel : ViewModel(){
     // Add new lines to the path and add draw them on the canvas
     fun addToPath(x: Float, y: Float) {
         currentPath.lineTo(x, y)
+        paint.color = pen.color
+        paint.strokeWidth = pen.size
         canvas.drawPath(currentPath, paint)
-    }
-
-    // Draw all paths on the canvas
-    private fun drawAllPaths() {
-        paths.forEach { path ->
-            canvas.drawPath(path, paint)
-        }
     }
 
     fun getBitmap(): Bitmap {
         return _bitmap
     }
 
-    fun setPenColor(color: Color) {
-        _penColor.value = color
-        paint.color = color.toArgb()
+    fun setPenColor(color: Int) {
+        pen.color = color
+       _penLiveData.value = pen
     }
 
     fun setPenSize(size: Float) {
-        _penSize.value = size
-        paint.strokeWidth = size
+       pen.size = size
+        _penLiveData.value = pen
     }
+
+//    private fun drawShape(shape: Shape) {
+//        when (shape) {
+//            Shape.CIRCLE -> {
+//                val lastX = currentPath.lastPointX
+//                val lastY = currentPath.lastPointY
+//                val radius = _pen.value?.size ?: 10f
+//                canvas.drawCircle(lastX, lastY, radius, paint)
+//            }
+//            Shape.LINE -> {
+//                canvas.drawPath(currentPath, paint)
+//            }
+//        }
+//    }
+
 }
