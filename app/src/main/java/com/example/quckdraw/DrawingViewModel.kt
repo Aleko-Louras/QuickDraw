@@ -15,7 +15,7 @@ data class Pen(
 )
 
 enum class Shape {
-    CIRCLE, LINE
+    CIRCLE, LINE, TRIANGLE
 }
 
 class DrawingViewModel : ViewModel(){
@@ -69,6 +69,11 @@ class DrawingViewModel : ViewModel(){
        pen.size = size
         _penLiveData.value = pen
     }
+
+    fun setPenShape(shape: Shape){
+        pen.
+    }
+
 
     fun getNumberOfPaths() : Int{
         return paths.size
