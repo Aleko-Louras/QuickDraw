@@ -41,5 +41,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="255" />
+    <View
+        android:id="@+id/colorPreview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/black" />
 
 </LinearLayout>

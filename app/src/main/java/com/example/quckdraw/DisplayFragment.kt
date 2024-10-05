@@ -36,19 +36,20 @@ class DisplayFragment : Fragment() {
 
         binding.colorPalette.setOnClickListener {
             val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_color_picker, null)
+            val colorPreview = dialogView.findViewById<View>(R.id.colorPreview)
 
-            val seekBarRed = dialogView.findViewById<SeekBar>(R.id.seekBarRed)
-            val seekBarGreen = dialogView.findViewById<SeekBar>(R.id.seekBarGreen)
-            val seekBarBlue = dialogView.findViewById<SeekBar>(R.id.seekBarBlue)
+            val barRed = dialogView.findViewById<SeekBar>(R.id.seekBarRed)
+            val barGreen = dialogView.findViewById<SeekBar>(R.id.seekBarGreen)
+            val barBlue = dialogView.findViewById<SeekBar>(R.id.seekBarBlue)
 
             val initialColor = viewModel.penLiveData.value?.color ?: Color.BLACK
-            val initialRed = Color.red(initialColor)
-            val initialGreen = Color.green(initialColor)
-            val initialBlue = Color.blue(initialColor)
+            val initRed = Color.red(initialColor)
+            val initGreen = Color.green(initialColor)
+            val initBlue = Color.blue(initialColor)
 
-            seekBarRed.progress = initialRed
-            seekBarGreen.progress = initialGreen
-            seekBarBlue.progress = initialBlue
+            barRed.progress = initRed
+            barGreen.progress = initGreen
+            barBlue.progress = initBlue
 
             var currentColor = initialColor
 
@@ -62,21 +63,22 @@ class DisplayFragment : Fragment() {
 
             val dialog = builder.create()
 
-            val onSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
+            val barChangeListener = object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    val red = seekBarRed.progress
-                    val green = seekBarGreen.progress
-                    val blue = seekBarBlue.progress
+                    val red = barRed.progress
+                    val green = barGreen.progress
+                    val blue = barBlue.progress
                     currentColor = Color.rgb(red, green, blue)
+                    colorPreview.setBackgroundColor(currentColor)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             }
 
-            seekBarRed.setOnSeekBarChangeListener(onSeekBarChangeListener)
-            seekBarGreen.setOnSeekBarChangeListener(onSeekBarChangeListener)
-            seekBarBlue.setOnSeekBarChangeListener(onSeekBarChangeListener)
+            barRed.setOnSeekBarChangeListener(barChangeListener)
+            barGreen.setOnSeekBarChangeListener(barChangeListener)
+            barBlue.setOnSeekBarChangeListener(barChangeListener)
 
             dialog.show()
         }
