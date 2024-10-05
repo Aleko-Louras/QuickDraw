@@ -11,11 +11,12 @@ import android.graphics.Paint
 
 data class Pen(
     var color: Int = Color.BLUE,
-    var size: Float = 10f
+    var size: Float = 10f,
+    var shape: Shape = Shape.LINE
 )
 
 enum class Shape {
-    CIRCLE, LINE
+    CIRCLE, LINE, TRIANGLE
 }
 
 class DrawingViewModel : ViewModel(){
@@ -23,8 +24,6 @@ class DrawingViewModel : ViewModel(){
     private val drawingWidth = 800
     private val drawingHeight = 800
 
-    // Bitmap to hold pixels, Canvas to host the draw calls, Paths for creating lines
-    // and a Paint for styles
     private val _bitmap = Bitmap.createBitmap(drawingWidth, drawingHeight, Bitmap.Config.ARGB_8888)
     private val canvas = Canvas(_bitmap)
     private val paint: Paint = Paint().apply {
@@ -67,6 +66,11 @@ class DrawingViewModel : ViewModel(){
 
     fun setPenSize(size: Float) {
        pen.size = size
+        _penLiveData.value = pen
+    }
+
+    fun setPenShape(shape: Shape) {
+        pen.shape = shape
         _penLiveData.value = pen
     }
 
