@@ -68,7 +68,6 @@ class DisplayFragment : Fragment() {
                     val green = seekBarGreen.progress
                     val blue = seekBarBlue.progress
                     currentColor = Color.rgb(red, green, blue)
-                    // Optionally, update a preview color in the dialog
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}

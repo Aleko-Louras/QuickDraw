@@ -24,8 +24,6 @@ class DrawingViewModel : ViewModel(){
     private val drawingWidth = 800
     private val drawingHeight = 800
 
-    // Bitmap to hold pixels, Canvas to host the draw calls, Paths for creating lines
-    // and a Paint for styles 
     private val _bitmap = Bitmap.createBitmap(drawingWidth, drawingHeight, Bitmap.Config.ARGB_8888)
     private val canvas = Canvas(_bitmap)
     private val paint: Paint = Paint().apply {
