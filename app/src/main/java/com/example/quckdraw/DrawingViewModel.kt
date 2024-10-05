@@ -11,7 +11,8 @@ import android.graphics.Paint
 
 data class Pen(
     var color: Int = Color.BLUE,
-    var size: Float = 10f
+    var size: Float = 10f,
+    var shape: Shape = Shape.LINE
 )
 
 enum class Shape {
@@ -70,10 +71,10 @@ class DrawingViewModel : ViewModel(){
         _penLiveData.value = pen
     }
 
-    fun setPenShape(shape: Shape){
-        pen.
+    fun setPenShape(shape: Shape) {
+        pen.shape = shape
+        _penLiveData.value = pen
     }
-
 
     fun getNumberOfPaths() : Int{
         return paths.size
