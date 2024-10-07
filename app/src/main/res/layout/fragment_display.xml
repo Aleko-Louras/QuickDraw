@@ -36,5 +36,49 @@
         android:layout_height="wrap_content"
         android:text="Current Color (Tap to Change)"
         android:textSize="16sp" />
+    <LinearLayout
+        android:id="@+id/shapeSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
+
+        <ImageButton
+            android:id="@+id/buttonLine"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_line"
+            android:contentDescription="Line"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_margin="8dp"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true" />
+
+        <ImageButton
+            android:id="@+id/buttonSquare"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_square"
+            android:contentDescription="Square"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_margin="8dp"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true" />
+
+        <ImageButton
+            android:id="@+id/buttonTriangle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_triangle"
+            android:contentDescription="Triangle"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_margin="8dp"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true" />
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
