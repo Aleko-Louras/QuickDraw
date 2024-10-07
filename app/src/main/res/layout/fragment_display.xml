@@ -13,72 +13,105 @@
         android:layout_gravity="center"
         android:background="@android:color/white" />
 
-    <SeekBar
-        android:id="@+id/penSizeSeekBar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:max="100"
-        android:progress="10" />
-    <View
-        android:id="@+id/colorPalette"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:background="@android:color/black"
-        android:elevation="2dp"
-        android:clickable="true" />
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/colorPaletteLabel"
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/brush_48dp_5f6368_fill0_wght400_grad0_opsz48"
+            android:contentDescription="Brush icon"
+            android:layout_marginEnd="8dp" />
+
+
+        <SeekBar
+            android:id="@+id/penSizeSeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="100"
+            android:progress="10" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Current Color (Tap to Change)"
-        android:textSize="16sp" />
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/palette_48dp_5f6368_fill0_wght400_grad0_opsz48"
+            android:contentDescription="Pen Icon"
+            android:layout_marginEnd="8dp" />
+
+        <View
+            android:id="@+id/colorPalette"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="16dp"
+            android:background="@android:color/black"
+            android:elevation="2dp"
+            android:clickable="true" />
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/shapeSelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Pen Icon"
+            android:src="@drawable/shapes_48dp_5f6368_fill0_wght400_grad0_opsz48" />
 
         <ImageButton
             android:id="@+id/buttonLine"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_line"
-            android:contentDescription="Line"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_margin="8dp"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Line"
             android:scaleType="centerInside"
-            android:adjustViewBounds="true" />
+            android:src="@drawable/horizontal_rule_48dp_5f6368_fill0_wght400_grad0_opsz20" />
 
         <ImageButton
             android:id="@+id/buttonSquare"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_square"
-            android:contentDescription="Square"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_margin="8dp"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Square"
             android:scaleType="centerInside"
-            android:adjustViewBounds="true" />
+            android:src="@drawable/square_48dp_5f6368_fill0_wght400_grad0_opsz48" />
 
         <ImageButton
             android:id="@+id/buttonTriangle"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_triangle"
-            android:contentDescription="Triangle"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_margin="8dp"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Triangle"
             android:scaleType="centerInside"
-            android:adjustViewBounds="true" />
+            android:src="@drawable/change_history_48dp_5f6368_fill0_wght400_grad0_opsz48" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>
