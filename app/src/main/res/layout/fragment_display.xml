@@ -76,7 +76,7 @@
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="Pen Icon"
-            android:src="@drawable/shapes_48dp_5f6368_fill0_wght400_grad0_opsz48" />
+            android:src="@drawable/approval_48dp_5f6368_fill0_wght400_grad0_opsz48" />
 
         <ImageButton
             android:id="@+id/buttonLine"
@@ -110,6 +110,17 @@
             android:contentDescription="Triangle"
             android:scaleType="centerInside"
             android:src="@drawable/change_history_48dp_5f6368_fill0_wght400_grad0_opsz48" />
+
+        <ImageButton
+            android:id="@+id/buttonCircle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:adjustViewBounds="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Circle"
+            android:scaleType="centerInside"
+            android:src="@drawable/circle_48dp_5f6368_fill0_wght400_grad0_opsz48" />
 
     </LinearLayout>
 

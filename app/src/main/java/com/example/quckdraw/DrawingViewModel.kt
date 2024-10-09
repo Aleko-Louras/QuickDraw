@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.graphics.Path
 import android.graphics.Paint
+import kotlin.math.pow
 
 data class Pen(
     var color: Int = Color.BLUE,
@@ -16,7 +17,7 @@ data class Pen(
 )
 
 enum class Shape {
-    CIRCLE, LINE, TRIANGLE
+    LINE, CIRCLE, TRIANGLE, SQUARE
 }
 
 class DrawingViewModel : ViewModel(){
@@ -49,10 +50,39 @@ class DrawingViewModel : ViewModel(){
 
     // Add new lines to the path and add draw them on the canvas
     fun addToPath(x: Float, y: Float) {
-        currentPath.lineTo(x, y)
         paint.color = pen.color
         paint.strokeWidth = pen.size
+        currentPath.lineTo(x, y)
         canvas.drawPath(currentPath, paint)
+    }
+
+    // Draw shapes on the canvas as the tapped position
+    fun drawShapeAt(x: Float, y: Float) {
+        paint.color = pen.color
+        paint.strokeWidth = pen.size
+        paint.style = Paint.Style.FILL
+
+        when(pen.shape) {
+            Shape.CIRCLE -> {
+                val radius = pen.size
+                canvas.drawCircle(x, y, radius, paint)
+            }
+            Shape.TRIANGLE -> {
+                val size = pen.size
+                val path = Path().apply {
+                    moveTo(x, y - size)
+                    lineTo(x - size, y + size)
+                    lineTo(x + size, y + size)
+                    close()
+                }
+                canvas.drawPath(path, paint)
+            }
+            Shape.SQUARE -> {
+                val size = pen.size
+                canvas.drawRect(x - size, y - size, x + size, y + size,  paint)
+            }
+            Shape.LINE -> {}
+        }
     }
 
     fun getBitmap(): Bitmap {
@@ -76,6 +106,10 @@ class DrawingViewModel : ViewModel(){
 
     fun getNumberOfPaths() : Int{
         return paths.size
+    }
+
+    fun isLine(): Boolean {
+      return pen.shape == Shape.LINE
     }
 
 }

@@ -34,6 +34,19 @@ class DisplayFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
+        binding.buttonLine.setOnClickListener {
+            viewModel.setPenShape(Shape.LINE)
+        }
+        binding.buttonSquare.setOnClickListener {
+            viewModel.setPenShape(Shape.SQUARE)
+        }
+        binding.buttonTriangle.setOnClickListener {
+            viewModel.setPenShape(Shape.TRIANGLE)
+        }
+        binding.buttonCircle.setOnClickListener {
+            viewModel.setPenShape(Shape.CIRCLE)
+        }
+
         binding.colorPalette.setOnClickListener {
             val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_color_picker, null)
             val colorPreview = dialogView.findViewById<View>(R.id.colorPreview)
