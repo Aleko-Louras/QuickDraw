@@ -45,4 +45,16 @@ class DrawingViewTests {
         vm.addToPath(1.0f, 1.0f)
         assertNotSame(before, vm.getNumberOfPaths())
     }
+    @Test
+    fun penShapeDidChange(){
+        val before = vm.penLiveData.value?.shape
+        var callbackFired = false
+        vm.penLiveData.observe(lifecycleOwner){
+            callbackFired = true
+        }
+        vm.setPenShape(Shape.SQUARE)
+        assertTrue(callbackFired)
+        assertNotSame(before, vm.penLiveData.value?.shape)
+        assertSame(Shape.SQUARE, vm.penLiveData.value?.shape)
+    }
 }
