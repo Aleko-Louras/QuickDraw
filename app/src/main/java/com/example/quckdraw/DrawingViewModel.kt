@@ -35,25 +35,26 @@ class DrawingViewModel : ViewModel(){
         isAntiAlias = true
     }
 
-    // Keep track of pen properties with the pen
     private var pen = Pen()
     private val _penLiveData = MutableLiveData(pen)
     val penLiveData: LiveData<Pen> = _penLiveData
 
-    // Store all the paths of the drawing as a list
     private var currentPath: Path = Path()
     private val paths: MutableList<Path> = mutableListOf()
 
     // Start a new path and move to the touch position
     fun startPath(x: Float, y: Float) {
-        currentPath = Path()
-        currentPath.moveTo(x, y)
+        currentPath = Path().apply {
+            moveTo(x, y)
+        }
         paths.add(currentPath)
     }
     fun startShape(x: Float, y: Float) {
         startX = x
         startY = y
     }
+
+
     private fun distance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
         return ((x2 - x1).pow(2) + (y2 - y1).pow(2)).pow(0.5f)
     }
@@ -63,6 +64,7 @@ class DrawingViewModel : ViewModel(){
         paint.style = Paint.Style.FILL
 
         when (pen.shape) {
+            Shape.LINE -> {}
             Shape.CIRCLE -> {
                 val radius = distance(startX, startY, x, y)
                 canvas.drawCircle(startX, startY, radius, paint)
@@ -81,46 +83,16 @@ class DrawingViewModel : ViewModel(){
                 val size = distance(startX, startY, x, y)
                 canvas.drawRect(startX - size, startY - size, startX + size, startY + size, paint)
             }
-            Shape.LINE -> {}
+
         }
     }
 
-
-    // Add new lines to the path and add draw them on the canvas
     fun addToPath(x: Float, y: Float) {
         paint.color = pen.color
         paint.strokeWidth = pen.size
+        paint.style = Paint.Style.STROKE
         currentPath.lineTo(x, y)
         canvas.drawPath(currentPath, paint)
-    }
-
-    // Draw shapes on the canvas as the tapped position
-    fun drawShapeAt(x: Float, y: Float) {
-        paint.color = pen.color
-        paint.strokeWidth = pen.size
-        paint.style = Paint.Style.FILL
-
-        when(pen.shape) {
-            Shape.CIRCLE -> {
-                val radius = pen.size
-                canvas.drawCircle(x, y, radius, paint)
-            }
-            Shape.TRIANGLE -> {
-                val size = pen.size
-                val path = Path().apply {
-                    moveTo(x, y - size)
-                    lineTo(x - size, y + size)
-                    lineTo(x + size, y + size)
-                    close()
-                }
-                canvas.drawPath(path, paint)
-            }
-            Shape.SQUARE -> {
-                val size = pen.size
-                canvas.drawRect(x - size, y - size, x + size, y + size,  paint)
-            }
-            Shape.LINE -> {}
-        }
     }
 
     fun getBitmap(): Bitmap {
