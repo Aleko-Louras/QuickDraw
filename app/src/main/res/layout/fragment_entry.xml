@@ -11,9 +11,9 @@
         android:id="@+id/welcome_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to drawing app"
-        android:textSize="24sp"
+        android:layout_marginBottom="16dp"
+        android:text="Welcome to QuickDraw"
         android:textColor="@android:color/black"
-        android:layout_marginBottom="16dp" />
+        android:textSize="24sp" />
 
 </LinearLayout>
