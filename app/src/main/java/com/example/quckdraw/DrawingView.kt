@@ -28,18 +28,20 @@ class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs)
                 if (drawingViewModel.isLine()) {
                     drawingViewModel.startPath(x, y)
                 } else {
-                    drawingViewModel.drawShapeAt(x, y)
+                    drawingViewModel.startShape(x, y)
                 }
-
                 invalidate()
             }
             MotionEvent.ACTION_MOVE -> {
                 if (drawingViewModel.isLine()) {
                     drawingViewModel.addToPath(x, y)
-                    invalidate()
+                } else {
+                    drawingViewModel.updateShape(x, y)
                 }
+                invalidate()
             }
         }
         return true
     }
+
 }
