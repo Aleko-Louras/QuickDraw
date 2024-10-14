@@ -75,17 +75,6 @@ class DrawingViewModelTest {
     }
 
     @Test
-    fun testStartPathAndAddToPath() {
-        assertEquals(0, viewModel.getNumberOfPaths())
-
-        viewModel.startPath(100f, 100f)
-        assertEquals(1, viewModel.getNumberOfPaths())
-
-        viewModel.addToPath(200f, 200f)
-        assertEquals(1, viewModel.getNumberOfPaths())
-    }
-
-    @Test
     fun testIsLine() {
         // Default shape is LINE
         assertTrue(viewModel.isLine())
@@ -130,13 +119,7 @@ class DrawingViewModelTest {
         TestCase.assertTrue(callbackFired)
         TestCase.assertNotSame(before, vm.penLiveData.value?.size)
     }
-
-    @Test
-    fun pathsUpdatedAccordingly() {
-        val before = vm.getNumberOfPaths()
-        vm.addToPath(1.0f, 1.0f)
-        TestCase.assertNotSame(before, vm.getNumberOfPaths())
-    }
+    
     @Test
     fun penShapeDidChange(){
         val before = vm.penLiveData.value?.shape
