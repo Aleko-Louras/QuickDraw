@@ -5,7 +5,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-
+import androidx.lifecycle.testing.TestLifecycleOwner
+import junit.framework.TestCase
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.Assert.*
@@ -103,5 +104,49 @@ class DrawingViewModelTest {
         assertNotNull(bitmap)
         assertEquals(800, bitmap.width)
         assertEquals(800, bitmap.height)
+    }
+    private val vm = DrawingViewModel()
+    private val lifecycleOwner = TestLifecycleOwner()
+    @Test
+    fun doesPenColorChange() {
+        val before = vm.penLiveData.value?.color
+        var callbackFired = false
+        vm.penLiveData.observe(lifecycleOwner){
+            callbackFired = true
+        }
+        vm.setPenColor(10)
+        TestCase.assertTrue(callbackFired)
+        TestCase.assertNotSame(before, vm.penLiveData.value?.color)
+    }
+
+    @Test
+    fun doesPenSizeChange() {
+        val before = vm.penLiveData.value?.size
+        var callbackFired = false
+        vm.penLiveData.observe(lifecycleOwner){
+            callbackFired = true
+        }
+        vm.setPenSize(1.0f)
+        TestCase.assertTrue(callbackFired)
+        TestCase.assertNotSame(before, vm.penLiveData.value?.size)
+    }
+
+    @Test
+    fun pathsUpdatedAccordingly() {
+        val before = vm.getNumberOfPaths()
+        vm.addToPath(1.0f, 1.0f)
+        TestCase.assertNotSame(before, vm.getNumberOfPaths())
+    }
+    @Test
+    fun penShapeDidChange(){
+        val before = vm.penLiveData.value?.shape
+        var callbackFired = false
+        vm.penLiveData.observe(lifecycleOwner){
+            callbackFired = true
+        }
+        vm.setPenShape(Shape.SQUARE)
+        TestCase.assertTrue(callbackFired)
+        TestCase.assertNotSame(before, vm.penLiveData.value?.shape)
+        assertSame(Shape.SQUARE, vm.penLiveData.value?.shape)
     }
 }
