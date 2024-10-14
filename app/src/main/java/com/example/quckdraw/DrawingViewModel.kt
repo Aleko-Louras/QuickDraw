@@ -40,14 +40,12 @@ class DrawingViewModel : ViewModel(){
     val penLiveData: LiveData<Pen> = _penLiveData
 
     private var currentPath: Path = Path()
-    private val paths: MutableList<Path> = mutableListOf()
 
     // Start a new path and move to the touch position
     fun startPath(x: Float, y: Float) {
         currentPath = Path().apply {
             moveTo(x, y)
         }
-        paths.add(currentPath)
     }
     fun startShape(x: Float, y: Float) {
         startX = x
@@ -112,10 +110,6 @@ class DrawingViewModel : ViewModel(){
     fun setPenShape(shape: Shape) {
         pen.shape = shape
         _penLiveData.value = pen
-    }
-
-    fun getNumberOfPaths() : Int{
-        return paths.size
     }
 
     fun isLine(): Boolean {
