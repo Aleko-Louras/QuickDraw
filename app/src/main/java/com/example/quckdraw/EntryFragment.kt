@@ -23,15 +23,18 @@ class EntryFragment : Fragment() {
         // Inflate the layout for this fragment using ViewBinding
         val binding = FragmentEntryBinding.inflate(inflater, container, false)
 
+        //Timer for splashscreen navigation
         android.os.Handler(Looper.getMainLooper()).postDelayed({
             navigateToDrawFragment()
         }, 2000)
 
-        Log.e("entry fragment", "here it is")
         return binding.root
     }
 
-    private fun navigateToDrawFragment(){
+    /**
+     * Helper for navigating to draw fragment
+     */
+    private fun navigateToDrawFragment() {
         Log.e("entry frag", "navigating")
         findNavController().navigate(R.id.action_enter_drawing_submitted)
     }

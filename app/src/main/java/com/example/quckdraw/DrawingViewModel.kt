@@ -20,7 +20,7 @@ enum class Shape {
     LINE, CIRCLE, TRIANGLE, SQUARE
 }
 
-class DrawingViewModel : ViewModel(){
+class DrawingViewModel : ViewModel() {
 
     private val drawingWidth = 800
     private val drawingHeight = 800
@@ -41,32 +41,48 @@ class DrawingViewModel : ViewModel(){
 
     private var currentPath: Path = Path()
 
-    // Start a new path and move to the touch position
+    /**
+     * Start a new path and move to the new position
+     */
     fun startPath(x: Float, y: Float) {
         currentPath = Path().apply {
             moveTo(x, y)
         }
     }
+
+    /**
+     * initialize start values for shapes
+     */
     fun startShape(x: Float, y: Float) {
         startX = x
         startY = y
     }
 
-
+    /**
+     * returns the computed distance between to points
+     */
     private fun distance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
         return ((x2 - x1).pow(2) + (y2 - y1).pow(2)).pow(0.5f)
     }
+
+    /**
+     * Handle logic for pen shape change and drawing
+     */
     fun updateShape(x: Float, y: Float) {
+
         paint.color = pen.color
         paint.strokeWidth = pen.size
         paint.style = Paint.Style.FILL
 
         when (pen.shape) {
-            Shape.LINE -> {}
+
+            Shape.LINE -> {}//default shape
+
             Shape.CIRCLE -> {
                 val radius = distance(startX, startY, x, y)
                 canvas.drawCircle(startX, startY, radius, paint)
             }
+
             Shape.TRIANGLE -> {
                 val size = distance(startX, startY, x, y)
                 val path = Path().apply {
@@ -77,6 +93,7 @@ class DrawingViewModel : ViewModel(){
                 }
                 canvas.drawPath(path, paint)
             }
+
             Shape.SQUARE -> {
                 val size = distance(startX, startY, x, y)
                 canvas.drawRect(startX - size, startY - size, startX + size, startY + size, paint)
@@ -85,6 +102,9 @@ class DrawingViewModel : ViewModel(){
         }
     }
 
+    /**
+     * draws a path to x and y
+     */
     fun addToPath(x: Float, y: Float) {
         paint.color = pen.color
         paint.strokeWidth = pen.size
@@ -93,27 +113,42 @@ class DrawingViewModel : ViewModel(){
         canvas.drawPath(currentPath, paint)
     }
 
+    /**
+     * returns the global bitmap
+     */
     fun getBitmap(): Bitmap {
         return _bitmap
     }
 
+    /**
+     * sets the pen color to passed in color
+     */
     fun setPenColor(color: Int) {
         pen.color = color
-       _penLiveData.value = pen
-    }
-
-    fun setPenSize(size: Float) {
-       pen.size = size
         _penLiveData.value = pen
     }
 
+    /**
+     * sets the pen size to passed in size
+     */
+    fun setPenSize(size: Float) {
+        pen.size = size
+        _penLiveData.value = pen
+    }
+
+    /**
+     * sets the pen shape to passed in shape
+     */
     fun setPenShape(shape: Shape) {
         pen.shape = shape
         _penLiveData.value = pen
     }
 
+    /**
+     * returns true or false on if pen shape is line
+     */
     fun isLine(): Boolean {
-      return pen.shape == Shape.LINE
+        return pen.shape == Shape.LINE
     }
 
 }

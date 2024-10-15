@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.quckdraw.databinding.FragmentDisplayBinding
 
 class DisplayFragment : Fragment() {
-
+    //initialize xml binding and shared viewmodel among fragments
     private lateinit var binding: FragmentDisplayBinding
     private val viewModel: DrawingViewModel by activityViewModels()
 
@@ -21,10 +21,12 @@ class DisplayFragment : Fragment() {
         binding = FragmentDisplayBinding.inflate(inflater)
         binding.drawingView.setViewModel(viewModel)
 
+        //observe pen for changing pen color
         viewModel.penLiveData.observe(viewLifecycleOwner) { pen ->
             binding.colorPalette.setBackgroundColor(pen.color)
         }
 
+        //observe bar for changing pen size with slider
         binding.penSizeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 viewModel.setPenSize(progress.toFloat())
@@ -47,8 +49,10 @@ class DisplayFragment : Fragment() {
             viewModel.setPenShape(Shape.CIRCLE)
         }
 
+        //button listener to display user inputted color values, with the color as well
         binding.colorPalette.setOnClickListener {
-            val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_color_picker, null)
+            val dialogView =
+                LayoutInflater.from(requireContext()).inflate(R.layout.dialog_color_picker, null)
             val colorPreview = dialogView.findViewById<View>(R.id.colorPreview)
 
             val barRed = dialogView.findViewById<SeekBar>(R.id.seekBarRed)
@@ -77,7 +81,11 @@ class DisplayFragment : Fragment() {
             val dialog = builder.create()
 
             val barChangeListener = object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
                     val red = barRed.progress
                     val green = barGreen.progress
                     val blue = barBlue.progress

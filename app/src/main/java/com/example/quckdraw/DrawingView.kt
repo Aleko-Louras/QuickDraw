@@ -14,11 +14,17 @@ class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs)
         this.drawingViewModel = viewModel
     }
 
+    /**
+     * Initialize canvas with bitmap for drawing fragment
+     */
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawBitmap(drawingViewModel.getBitmap(), 0f, 0f, null)
     }
 
+    /**
+     * Override function for drawing on canvas with touch
+     */
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val x = event.x
         val y = event.y
@@ -32,6 +38,7 @@ class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs)
                 }
                 invalidate()
             }
+
             MotionEvent.ACTION_MOVE -> {
                 if (drawingViewModel.isLine()) {
                     drawingViewModel.addToPath(x, y)
@@ -43,7 +50,6 @@ class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs)
         }
         return true
     }
-
 
 
 }

@@ -9,7 +9,8 @@ import androidx.activity.viewModels
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: DrawingViewModel by viewModels() // Get the ViewModel using activityViewModels
+    //initialize viewmodel, navigation graph inflated with setContentView
+    private val viewModel: DrawingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
