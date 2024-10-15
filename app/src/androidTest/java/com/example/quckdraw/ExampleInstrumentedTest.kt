@@ -27,7 +27,7 @@ class DrawingViewModelTest {
     }
 
     @Test
-    fun testInitialPenValues() {
+    fun testInitializedPenValues() {
         val initialPen = viewModel.penLiveData.value
         assertNotNull(initialPen)
         assertEquals(Color.BLUE, initialPen?.color)
@@ -36,42 +36,65 @@ class DrawingViewModelTest {
     }
 
     @Test
-    fun testSetPenColor() {
-        val observer = Observer<Pen> {}
-        try {
-            viewModel.penLiveData.observeForever(observer)
-            viewModel.setPenColor(Color.RED)
-            val updatedPen = viewModel.penLiveData.value
-            assertEquals(Color.RED, updatedPen?.color)
-        } finally {
-            viewModel.penLiveData.removeObserver(observer)
-        }
+    fun testSetPenColorRed() {
+        viewModel.setPenColor(Color.RED)
+        val updatedPen = viewModel.penLiveData.value
+        assertEquals(Color.RED, updatedPen?.color)
     }
 
     @Test
-    fun testSetPenSize() {
-        val observer = Observer<Pen> {}
-        try {
-            viewModel.penLiveData.observeForever(observer)
-            viewModel.setPenSize(20f)
-            val updatedPen = viewModel.penLiveData.value
-            assertEquals(20f, updatedPen?.size)
-        } finally {
-            viewModel.penLiveData.removeObserver(observer)
-        }
+    fun testSetPenColorBlue() {
+        viewModel.setPenColor(Color.BLUE)
+        val updatedPen = viewModel.penLiveData.value
+        assertEquals(Color.BLUE, updatedPen?.color)
     }
 
     @Test
-    fun testSetPenShape() {
-        val observer = Observer<Pen> {}
-        try {
-            viewModel.penLiveData.observeForever(observer)
-            viewModel.setPenShape(Shape.CIRCLE)
-            val updatedPen = viewModel.penLiveData.value
-            assertEquals(Shape.CIRCLE, updatedPen?.shape)
-        } finally {
-            viewModel.penLiveData.removeObserver(observer)
-        }
+    fun testSetPenColorBlack() {
+        viewModel.setPenColor(Color.BLACK)
+        val updatedPen = viewModel.penLiveData.value
+        assertEquals(Color.BLACK, updatedPen?.color)
+    }
+
+    @Test
+    fun testSetPenSize20() {
+        viewModel.setPenSize(20f)
+        val updatedPen = viewModel.penLiveData.value
+        assertEquals(20f, updatedPen?.size)
+    }
+    @Test
+    fun testSetPenSize50() {
+        viewModel.setPenSize(50f)
+        val updatedPen = viewModel.penLiveData.value
+        assertEquals(50f, updatedPen?.size)
+    }
+
+    @Test
+    fun testSetPenShapeCircle() {
+        viewModel.setPenShape(Shape.CIRCLE)
+        val updatedPen = viewModel.penLiveData.value
+        assertEquals(Shape.CIRCLE, updatedPen?.shape)
+    }
+
+    @Test
+    fun testSetPenShapeSQUARE() {
+        viewModel.setPenShape(Shape.SQUARE)
+        val updatedPen = viewModel.penLiveData.value
+        assertEquals(Shape.SQUARE, updatedPen?.shape)
+    }
+
+    @Test
+    fun testSetPenShapeLine() {
+        viewModel.setPenShape(Shape.LINE)
+        val updatedPen = viewModel.penLiveData.value
+        assertEquals(Shape.LINE, updatedPen?.shape)
+    }
+
+    @Test
+    fun testSetPenShapeTriangle() {
+        viewModel.setPenShape(Shape.TRIANGLE)
+        val updatedPen = viewModel.penLiveData.value
+        assertEquals(Shape.TRIANGLE, updatedPen?.shape)
     }
 
     @Test

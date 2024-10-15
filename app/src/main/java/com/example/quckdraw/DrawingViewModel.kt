@@ -9,22 +9,23 @@ import androidx.lifecycle.ViewModel
 import android.graphics.Path
 import android.graphics.Paint
 import kotlin.math.pow
-
+// class of pen
 data class Pen(
     var color: Int = Color.BLUE,
     var size: Float = 10f,
     var shape: Shape = Shape.LINE
 )
-
+// class of shape
 enum class Shape {
     LINE, CIRCLE, TRIANGLE, SQUARE
 }
 
 class DrawingViewModel : ViewModel() {
-
+    //size of the canvas
     private val drawingWidth = 800
     private val drawingHeight = 800
 
+    //the path coordinate
     private var startX = 0f
     private var startY = 0f
 
@@ -34,7 +35,7 @@ class DrawingViewModel : ViewModel() {
         style = Paint.Style.STROKE
         isAntiAlias = true
     }
-
+    //set pen object and make it livedata
     private var pen = Pen()
     private val _penLiveData = MutableLiveData(pen)
     val penLiveData: LiveData<Pen> = _penLiveData
@@ -78,12 +79,12 @@ class DrawingViewModel : ViewModel() {
 
             Shape.LINE -> {}//default shape
 
-            Shape.CIRCLE -> {
+            Shape.CIRCLE -> { //draw a circle
                 val radius = distance(startX, startY, x, y)
                 canvas.drawCircle(startX, startY, radius, paint)
             }
 
-            Shape.TRIANGLE -> {
+            Shape.TRIANGLE -> {//draw triangle
                 val size = distance(startX, startY, x, y)
                 val path = Path().apply {
                     moveTo(startX, startY - size)
@@ -94,7 +95,7 @@ class DrawingViewModel : ViewModel() {
                 canvas.drawPath(path, paint)
             }
 
-            Shape.SQUARE -> {
+            Shape.SQUARE -> {//draw square
                 val size = distance(startX, startY, x, y)
                 canvas.drawRect(startX - size, startY - size, startX + size, startY + size, paint)
             }

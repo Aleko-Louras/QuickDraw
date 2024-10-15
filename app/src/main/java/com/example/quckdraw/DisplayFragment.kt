@@ -35,7 +35,7 @@ class DisplayFragment : Fragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-
+        //event listener
         binding.buttonLine.setOnClickListener {
             viewModel.setPenShape(Shape.LINE)
         }
@@ -51,6 +51,7 @@ class DisplayFragment : Fragment() {
 
         //button listener to display user inputted color values, with the color as well
         binding.colorPalette.setOnClickListener {
+            //initialize the color slider
             val dialogView =
                 LayoutInflater.from(requireContext()).inflate(R.layout.dialog_color_picker, null)
             val colorPreview = dialogView.findViewById<View>(R.id.colorPreview)
