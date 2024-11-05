@@ -11,6 +11,9 @@ import android.graphics.Paint
 import androidx.lifecycle.ViewModelProvider
 import java.io.File
 import kotlin.math.pow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 // class of pen
 data class Pen(
     var color: Int = Color.BLUE,
@@ -41,6 +44,9 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     // TODO: Load drawings from the repository
 
     // TODO:  Save a drawing, should call repository method
+    fun saveDrawing() {
+        repository.saveDrawing("drawingName", _bitmap)
+    }
 
     // TODO: Delete a drawing, should call repository method
 

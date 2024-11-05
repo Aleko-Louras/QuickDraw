@@ -47,6 +47,7 @@ class DisplayFragment : Fragment() {
         }
         binding.buttonCircle.setOnClickListener {
             viewModel.setPenShape(Shape.CIRCLE)
+            //viewModel.saveDrawing()
         }
 
         //button listener to display user inputted color values, with the color as well

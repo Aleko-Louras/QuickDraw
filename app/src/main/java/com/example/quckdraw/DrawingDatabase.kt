@@ -54,14 +54,14 @@ interface DrawingDAO {
 
     //marked as suspend so the thread can yield in case the DB update is slow
     @Insert
-    suspend fun addDrawingData(data: DrawingData)
+    suspend fun insertDrawing(data: DrawingData)
 
     //returns a flow, so the task "collecting" it will be marked as suspend
-    @Query("SELECT * from drawings ORDER BY timestamp DESC LIMIT 1")
-    fun latestDrawings() : Flow<DrawingData>
-
-    @Query("SELECT * from drawings ORDER BY timestamp DESC")
-    fun allDrawings() : Flow<List<DrawingData>>
+//    @Query("SELECT * from drawings ORDER BY timestamp DESC LIMIT 1")
+//    fun latestDrawings() : Flow<DrawingData>
+//
+//    @Query("SELECT * from drawings ORDER BY timestamp DESC")
+//    fun allDrawings() : Flow<List<DrawingData>>
 
     @Delete
     suspend fun deleteDrawing(drawing: DrawingData)
