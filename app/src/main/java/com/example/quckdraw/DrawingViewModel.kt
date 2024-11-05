@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.graphics.Path
 import android.graphics.Paint
+import androidx.lifecycle.ViewModelProvider
+import java.io.File
 import kotlin.math.pow
 // class of pen
 data class Pen(
@@ -20,7 +22,28 @@ enum class Shape {
     LINE, CIRCLE, TRIANGLE, SQUARE
 }
 
-class DrawingViewModel : ViewModel() {
+// This factory class allows us to define custom constructors for the view model
+class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(DrawingViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return DrawingViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() {
+
+    private val drawings = mutableMapOf<String, Bitmap>()
+    private var currentDrawingId: String? = null
+
+    // TODO: Load drawings from the repository
+
+    // TODO:  Save a drawing, should call repository method
+
+    // TODO: Delete a drawing, should call repository method
+
     //size of the canvas
     private val drawingWidth = 800
     private val drawingHeight = 800
@@ -35,6 +58,7 @@ class DrawingViewModel : ViewModel() {
         style = Paint.Style.STROKE
         isAntiAlias = true
     }
+
     //set pen object and make it livedata
     private var pen = Pen()
     private val _penLiveData = MutableLiveData(pen)
