@@ -3,9 +3,11 @@ package com.example.quckdraw
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Date
 
 class DrawingRepository(
     private val scope: CoroutineScope,
@@ -24,10 +26,20 @@ class DrawingRepository(
             }
 
             // Create the DrawingData object without the 'file' parameter
-            val drawingEntity = DrawingData(filename = filename)
+            val drawingEntity = DrawingData(filename = filename,
+                timestamp = Date()
+            )
             drawingDao.insertDrawing(drawingEntity)
         }
     }
+
+    fun getLatestDrawing(): Flow<DrawingData> {
+        return drawingDao.latestDrawing()
+    }
+    fun getAllDrawings(): Flow<List<DrawingData>> {
+        return drawingDao.allDrawings()
+    }
+
 
 
     // TODO: Function to load a bitmap from file
@@ -41,6 +53,13 @@ class DrawingRepository(
     }
 
     // TODO: Function to delete a drawing
+    fun deleteDrawing(drawingData: DrawingData) {
+        scope.launch {
+            drawingDao.deleteDrawing(drawingData)
+            val file = File(filesDir, drawingData.filename)
+            file.delete()
+        }
+    }
 
     // TODO: Function to load all the names of drawings for the list of drawings
 

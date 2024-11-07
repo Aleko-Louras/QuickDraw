@@ -43,6 +43,7 @@ class DisplayFragment : Fragment() {
         //event listener
         binding.buttonLine.setOnClickListener {
             viewModel.setPenShape(Shape.LINE)
+            viewModel.saveDrawing()
         }
         binding.buttonSquare.setOnClickListener {
             viewModel.setPenShape(Shape.SQUARE)

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import android.graphics.Path
 import android.graphics.Paint
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import java.io.File
 import kotlin.math.pow
 import kotlinx.coroutines.CoroutineScope
@@ -45,8 +46,11 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
 
     // TODO:  Save a drawing, should call repository method
     fun saveDrawing() {
-        repository.saveDrawing("drawingName", _bitmap)
+        repository.saveDrawing("drawingID", _bitmap)
     }
+
+    val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
+    val allDrawings: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
 
     // TODO: Delete a drawing, should call repository method
 

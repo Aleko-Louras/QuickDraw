@@ -19,13 +19,22 @@ class Converters {
     fun toFile(path: String?): File? {
         return path?.let { File(it) }
     }
+    @TypeConverter
+    fun fromDate(date: Date?): Long? {
+        return date?.time
+    }
+    @TypeConverter
+    fun toDate(millisSinceEpoch: Long?): Date? {
+        return millisSinceEpoch?.let { Date(it) }
+    }
 }
 
 
 //Defines a SQLITE table, basically
 @Entity(tableName="drawings")
 data class DrawingData(
-    var filename: String
+    var filename: String,
+    var timestamp: Date
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
