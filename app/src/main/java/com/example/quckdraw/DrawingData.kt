@@ -9,22 +9,25 @@ import java.util.Date
 //apparently Room can't handle Date objects directly...
 //Room will use these converters when going from DB <-> Kotlin
 class Converters {
+
     @TypeConverter
-    fun fromTimestamp(value: Long?): Date? {
-        return value?.let { Date(it) }
+    fun fromFile(file: File?): String? {
+        return file?.absolutePath
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+    fun toFile(path: String?): File? {
+        return path?.let { File(it) }
     }
 }
+
 
 //Defines a SQLITE table, basically
 @Entity(tableName="drawings")
-data class DrawingData(var filename: String,
-                        var file: File
-                       ){
+data class DrawingData(
+    var filename: String
+) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0 // integer primary key for the DB
+    var id: Int = 0
 }
+
