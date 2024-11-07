@@ -15,24 +15,24 @@ import org.w3c.dom.Text
 import java.lang.reflect.Modifier
 
 
-//@Composable
-//fun DrawingListView (){
-//    @Composable
-//    fun DrawingListView(drawings: List<DrawingData>, onDrawingClick: (DrawingData) -> Unit) {
-//        LazyColumn {
-//            items(drawings) { drawing ->
-//                DrawingItem(drawing = drawing, onClick = { onDrawingClick(drawing) })
-//            }
-//        }
-//    }
-//}
-//
-//@Composable
-//fun DrawingItem(drawing: DrawingData, onClick: () -> Unit) {
-//    Row(modifier = androidx.compose.ui.Modifier
-//        .padding(16.dp)
-//        .fillMaxWidth(),
-//    ) {
-//        Text(text = "text")
-//    }
-//}
+@Composable
+fun DrawingListView (){
+    @Composable
+    fun DrawingListView(drawings: List<DrawingData>, onDrawingClick: (DrawingData) -> Unit) {
+        LazyColumn {
+            items(drawings) { drawing ->
+                DrawingItem(drawing = drawing, onClick = { onDrawingClick(drawing) })
+            }
+        }
+    }
+}
+
+@Composable
+fun DrawingItem(drawing: DrawingData, onClick: () -> Unit) {
+    Row(modifier = androidx.compose.ui.Modifier
+        .padding(16.dp)
+        .fillMaxWidth(),
+    ) {
+        Text(text = "text")
+    }
+}
