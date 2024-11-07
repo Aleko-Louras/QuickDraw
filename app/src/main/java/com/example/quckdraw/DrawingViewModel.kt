@@ -42,15 +42,28 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     private val drawings = mutableMapOf<String, Bitmap>()
     private var currentDrawingId: String? = null
 
+    val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
+    val allDrawingsLiveData: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
+
+
     // TODO: Load drawings from the repository
+    private fun loadDrawingsBitmaps() {
+        allDrawingsLiveData.observeForever { drawingList ->
+            drawingList.forEach { drawingData ->
+                val bitmap = repository.loadDrawing(drawingData)
+                bitmap?.let {
+                    drawings[drawingData.filename] = it
+                }
+            }
+        }
+    }
 
     // TODO:  Save a drawing, should call repository method
     fun saveDrawing() {
         repository.saveDrawing("drawingID", _bitmap)
     }
 
-    val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
-    val allDrawings: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
+
 
     // TODO: Delete a drawing, should call repository method
 
