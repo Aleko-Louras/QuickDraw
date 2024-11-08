@@ -34,6 +34,7 @@ class Converters {
 @Entity(tableName="drawings")
 data class DrawingData(
     var filename: String,
+    var path: String,
     var timestamp: Date
 ) {
     @PrimaryKey(autoGenerate = true)

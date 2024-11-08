@@ -2,6 +2,7 @@ package com.example.quckdraw
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Path
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -16,9 +17,9 @@ class DrawingRepository(
 ) {
 
     // TODO: Function to save a bitmap to file and insert metadata in the Room database
-    fun saveDrawing(drawingID: String, bitmap: Bitmap) {
+    fun saveDrawing(drawingName: String, bitmap: Bitmap, path: String) {
         scope.launch {
-            val filename = "$drawingID.png"
+            val filename = "$drawingName.png"
             val file = File(filesDir, filename)
 
             FileOutputStream(file).use { out ->
@@ -26,7 +27,9 @@ class DrawingRepository(
             }
 
             // Create the DrawingData object without the 'file' parameter
-            val drawingEntity = DrawingData(filename = filename,
+            val drawingEntity = DrawingData(
+                filename = filename,
+                path = path,
                 timestamp = Date()
             )
             drawingDao.insertDrawing(drawingEntity)

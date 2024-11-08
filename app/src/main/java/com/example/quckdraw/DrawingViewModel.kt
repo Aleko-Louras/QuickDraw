@@ -15,6 +15,8 @@ import kotlin.math.pow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 // class of pen
 data class Pen(
     var color: Int = Color.BLUE,
@@ -40,32 +42,30 @@ class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewM
 class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() {
 
     private val drawings = mutableMapOf<String, Bitmap>()
-    private var currentDrawingId: String? = null
+    private var currentDrawingName: String? = null
 
     val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
     val allDrawingsLiveData: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
 
 
     // TODO: Load drawings from the repository
-    private fun loadDrawingsBitmaps() {
-        allDrawingsLiveData.observeForever { drawingList ->
-            drawingList.forEach { drawingData ->
-                val bitmap = repository.loadDrawing(drawingData)
-                bitmap?.let {
-                    drawings[drawingData.filename] = it
-                }
-            }
-        }
-    }
+//    suspend fun loadDrawings() {
+//        val allDrawings = repository.getAllDrawings()
+//        return allDrawings
+//    }
 
     // TODO:  Save a drawing, should call repository method
-    fun saveDrawing() {
-        repository.saveDrawing("drawingID", _bitmap)
+    suspend fun saveDrawing(fileName: String, filePath: String) {
+        repository.saveDrawing(fileName, _bitmap,filePath)
     }
 
 
 
     // TODO: Delete a drawing, should call repository method
+    suspend fun deleteDrawing(drawingData: DrawingData){
+        repository.deleteDrawing(drawingData)
+    }
+
 
     //size of the canvas
     private val drawingWidth = 800
