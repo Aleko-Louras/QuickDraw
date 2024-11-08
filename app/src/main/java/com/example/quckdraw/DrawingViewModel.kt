@@ -29,16 +29,16 @@ enum class Shape {
     LINE, CIRCLE, TRIANGLE, SQUARE
 }
 
-//// This factory class allows us to define custom constructors for the view model
-//class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewModelProvider.Factory {
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//        if (modelClass.isAssignableFrom(DrawingViewModel::class.java)) {
-//            @Suppress("UNCHECKED_CAST")
-//            return DrawingViewModel(repository) as T
-//        }
-//        throw IllegalArgumentException("Unknown ViewModel class")
-//    }
-//}
+// This factory class allows us to define custom constructors for the view model
+class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(DrawingViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return DrawingViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
 
 class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() {
 

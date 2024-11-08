@@ -43,19 +43,19 @@ class DisplayFragment : Fragment() {
         //event listener
         binding.buttonLine.setOnClickListener {
             viewModel.setPenShape(Shape.LINE)
-            viewModel.saveDrawing()
+            //viewModel.saveDrawing()
         }
         binding.buttonSquare.setOnClickListener {
             viewModel.setPenShape(Shape.SQUARE)
-            viewModel.saveDrawing()
+            //viewModel.saveDrawing()
         }
         binding.buttonTriangle.setOnClickListener {
             viewModel.setPenShape(Shape.TRIANGLE)
-            viewModel.saveDrawing()
+            //viewModel.saveDrawing()
         }
         binding.buttonCircle.setOnClickListener {
             viewModel.setPenShape(Shape.CIRCLE)
-            viewModel.saveDrawing()
+           // viewModel.saveDrawing()
         }
 
         //button listener to display user inputted color values, with the color as well
