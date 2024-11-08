@@ -14,6 +14,7 @@ import java.io.File
 import kotlin.math.pow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -45,14 +46,12 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     private var currentDrawingName: String? = null
 
     val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
-    val allDrawingsLiveData: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
-
 
     // TODO: Load drawings from the repository
-//    suspend fun loadDrawings() {
-//        val allDrawings = repository.getAllDrawings()
-//        return allDrawings
-//    }
+    suspend fun loadDrawings(): List<DrawingData> {
+        val allDrawings = repository.getAllDrawings()
+        return allDrawings
+    }
 
     // TODO:  Save a drawing, should call repository method
     suspend fun saveDrawing(fileName: String, filePath: String) {

@@ -39,7 +39,7 @@ class DrawingRepository(
     fun getLatestDrawing(): Flow<DrawingData> {
         return drawingDao.latestDrawing()
     }
-    fun getAllDrawings(): Flow<List<DrawingData>> {
+    fun getAllDrawings(): List<DrawingData> {
         return drawingDao.allDrawings()
     }
 

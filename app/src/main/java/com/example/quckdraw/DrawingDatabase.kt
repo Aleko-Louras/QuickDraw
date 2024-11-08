@@ -59,7 +59,7 @@ interface DrawingDAO {
     @Query("SELECT * from drawings ORDER BY timestamp DESC LIMIT 1")
     fun latestDrawing(): Flow<DrawingData>
     @Query("SELECT * from drawings ORDER BY timestamp DESC")
-    fun allDrawings(): Flow<List<DrawingData>>
+    fun allDrawings(): List<DrawingData>
 
     @Delete
     suspend fun deleteDrawing(drawing: DrawingData)
