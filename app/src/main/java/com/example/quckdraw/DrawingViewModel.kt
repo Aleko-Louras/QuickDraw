@@ -42,10 +42,14 @@ class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewM
 
 class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() {
 
-    private val drawings = mutableMapOf<String, Bitmap>()
-    private var currentDrawingName: String? = null
+    private val _drawings = MutableLiveData(
+        mutableMapOf<String, Bitmap>())
+    val drawings = _drawings as LiveData<out Map<String,Bitmap>>
 
-    val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
+    private var currentDrawingName: String? = null
+    private val currentDrawingBitmap = MutableLiveData<Bitmap>()
+
+    //val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
 
     // TODO: Load drawings from the repository
     suspend fun loadDrawings(): List<DrawingData> {
@@ -58,7 +62,27 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         repository.saveDrawing(fileName, _bitmap,filePath)
     }
 
+    // TODO: Create a new drawing
+    suspend fun CreateNewDraw(fileName: String) {
+        // Reset the bitmap for the new drawing
+        _bitmap.eraseColor(Color.WHITE) // Clear the bitmap with a white background
 
+        // Reset the current path
+        currentPath.reset()
+
+        // Reset pen properties to defaults if needed
+        pen = Pen()
+        _penLiveData.value = pen
+
+        currentDrawingName = fileName
+        currentDrawingBitmap.value = _bitmap
+
+        // Add the new drawing to the drawings map with the file name as the key
+        _drawings.value = _drawings.value?.toMutableMap()?.apply {
+            put(fileName, _bitmap)
+
+        }
+    }
 
     // TODO: Delete a drawing, should call repository method
     suspend fun deleteDrawing(drawingData: DrawingData){
