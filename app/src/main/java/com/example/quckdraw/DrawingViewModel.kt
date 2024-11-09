@@ -10,6 +10,7 @@ import android.graphics.Path
 import android.graphics.Paint
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import java.io.File
 import kotlin.math.pow
 import kotlinx.coroutines.CoroutineScope
@@ -50,12 +51,19 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     private val currentDrawingBitmap = MutableLiveData<Bitmap>()
 
     //val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
+    // Expose drawings list as LiveData to automatically update when the repository changes
+    val drawingsList: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
 
-    // TODO: Load drawings from the repository
-    suspend fun loadDrawings(): List<DrawingData> {
-        val allDrawings = repository.getAllDrawings()
-        return allDrawings
+    fun insertSampeData() {
+        viewModelScope.launch { repository.insertSampleDrawings() }
     }
+
+
+//    // TODO: Load drawings from the repository
+//    suspend fun loadDrawings(): List<DrawingData> {
+//        val allDrawings = repository.getAllDrawings()
+//        return allDrawings
+//    }
 
     // TODO:  Save a drawing, should call repository method
     suspend fun saveDrawing(fileName: String, filePath: String) {

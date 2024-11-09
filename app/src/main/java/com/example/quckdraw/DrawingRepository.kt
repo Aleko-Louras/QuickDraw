@@ -39,8 +39,19 @@ class DrawingRepository(
     fun getLatestDrawing(): Flow<DrawingData> {
         return drawingDao.latestDrawing()
     }
-    fun getAllDrawings(): List<DrawingData> {
+    fun getAllDrawings(): Flow<List<DrawingData>> {
         return drawingDao.allDrawings()
+    }
+
+    suspend fun insertSampleDrawings() {
+        val sampleDrawings = listOf(
+            DrawingData("drawing1", "path/to/drawing1", Date()),
+            DrawingData("drawing2", "path/to/drawing2", Date()),
+            DrawingData("drawing3", "path/to/drawing3", Date())
+        )
+        sampleDrawings.forEach { drawing ->
+            drawingDao.insertDrawing(drawing)
+        }
     }
 
 

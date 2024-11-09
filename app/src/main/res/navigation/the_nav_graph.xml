@@ -12,6 +12,17 @@
         tools:layout="@layout/fragment_entry" >
         <action
             android:id="@+id/action_enter_drawing_submitted"
+            app:destination="@id/drawingListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/drawingListFragment"
+        android:name="com.example.quckdraw.DrawingListFragment"
+        android:label="fragment_drawing_list"
+        tools:layout="@layout/fragment_drawing_list_view" >
+        <!-- Optional: add navigation from DrawingListFragment to DisplayFragment if needed -->
+        <action
+            android:id="@+id/action_drawing_selected"
             app:destination="@id/displayFragment" />
     </fragment>
     <fragment
