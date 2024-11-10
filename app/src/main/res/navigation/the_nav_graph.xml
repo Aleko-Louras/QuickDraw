@@ -11,8 +11,11 @@
         android:label="fragment_entry"
         tools:layout="@layout/fragment_entry" >
         <action
-            android:id="@+id/action_enter_drawing_submitted"
+            android:id="@+id/action_go_to_drawing_list_fragment"
             app:destination="@id/drawingListFragment" />
+        <action
+            android:id="@+id/action_go_to_display_fragment"
+            app:destination="@id/displayFragment" />
     </fragment>
 
     <fragment
@@ -20,14 +23,19 @@
         android:name="com.example.quckdraw.DrawingListFragment"
         android:label="fragment_drawing_list"
         tools:layout="@layout/fragment_drawing_list_view" >
-        <!-- Optional: add navigation from DrawingListFragment to DisplayFragment if needed -->
+        <!-- Add this action to fix the issue -->
         <action
-            android:id="@+id/action_drawing_selected"
+            android:id="@+id/action_go_to_display_fragment"
             app:destination="@id/displayFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/displayFragment"
         android:name="com.example.quckdraw.DisplayFragment"
         android:label="fragment_display"
-        tools:layout="@layout/fragment_display" />
+        tools:layout="@layout/fragment_display" >
+    <action
+        android:id="@+id/action_back_to_drawing_list_fragment"
+        app:destination="@id/drawingListFragment" />
+    </fragment>
 </navigation>

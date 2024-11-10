@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.quckdraw.databinding.FragmentDisplayBinding
 
 
@@ -112,6 +113,10 @@ class DisplayFragment : Fragment() {
             barBlue.setOnSeekBarChangeListener(barChangeListener)
 
             dialog.show()
+        }
+
+        binding.viewDrawingsButton.setOnClickListener{
+            findNavController().navigate(R.id.action_back_to_drawing_list_fragment)
         }
 
         return binding.root

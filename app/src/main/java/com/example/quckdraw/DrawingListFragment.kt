@@ -5,11 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,9 +41,15 @@ class DrawingListFragment : Fragment() {
 
         binding.composeView1.setContent {
             val drawings by viewModel.drawingsList.observeAsState(emptyList())
-            DrawingListView(drawings) { selectedDrawing ->
-                // Handle drawing click, maybe navigate to a detail screen
-            }
+            DrawingListView(
+                drawings = drawings,
+                onDrawingClick = { drawing ->
+                    // Handle drawing click, maybe navigate to a detail screen
+                },
+                onDisplayClick = {
+                    viewModel.setViewDisplayFragment(!viewModel.viewDisplayFragment.value!!)  // Example action: Set LiveData to trigger UI change
+                }
+            )
         }
 
         return binding.root
@@ -49,10 +60,31 @@ class DrawingListFragment : Fragment() {
 
 
 @Composable
-fun DrawingListView(drawings: List<DrawingData>, onDrawingClick: (DrawingData) -> Unit) {
-    LazyColumn {
-        items(drawings) { drawing ->
-            DrawingItem(drawing = drawing, onClick = { onDrawingClick(drawing) })
+fun DrawingListView(drawings: List<DrawingData>,
+                    onDrawingClick: (DrawingData) -> Unit,
+                    onDisplayClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+        ) {
+            items(drawings) { drawing ->
+                DrawingItem(drawing = drawing, onClick = { onDrawingClick(drawing) })
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = onDisplayClick,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text("Display Button")
         }
     }
 }
