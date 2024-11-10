@@ -43,13 +43,6 @@ class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewM
 
 class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() {
 
-    private val _viewDisplayFragment = MutableLiveData(false)
-    val viewDisplayFragment = _viewDisplayFragment as LiveData<Boolean>
-
-    private val _viewDrawingsFragment = MutableLiveData(false)
-    val viewDrawingsFragment = _viewDrawingsFragment as LiveData<Boolean>
-
-
     private val _drawings = MutableLiveData(
         mutableMapOf<String, Bitmap>())
     val drawings = _drawings as LiveData<out Map<String,Bitmap>>
@@ -236,14 +229,5 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     fun isLine(): Boolean {
         return pen.shape == Shape.LINE
     }
-
-    fun setViewDisplayFragment(viewDrawings: Boolean) {
-        _viewDisplayFragment.value = viewDrawings
-    }
-
-    fun setViewDrawingsFragment(viewDrawings: Boolean) {
-        _viewDrawingsFragment.value = viewDrawings
-    }
-
 
 }

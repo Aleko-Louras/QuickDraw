@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.quckdraw.databinding.FragmentDisplayBinding
 import com.example.quckdraw.databinding.FragmentDrawingListViewBinding
 
@@ -47,7 +48,7 @@ class DrawingListFragment : Fragment() {
                     // Handle drawing click, maybe navigate to a detail screen
                 },
                 onDisplayClick = {
-                    viewModel.setViewDisplayFragment(!viewModel.viewDisplayFragment.value!!)  // Example action: Set LiveData to trigger UI change
+                    findNavController().navigate(R.id.action_go_to_display_fragment)
                 }
             )
         }

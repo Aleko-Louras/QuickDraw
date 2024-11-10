@@ -122,4 +122,5 @@ class DisplayFragment : Fragment() {
         return binding.root
     }
 
+
 }

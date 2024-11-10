@@ -28,40 +28,14 @@ class EntryFragment : Fragment() {
             navigateToDrawingListFragment()
         }, 2000)
 
-        viewModel.viewDisplayFragment.observeForever {
-            if (it) {
-                navigateToDrawFragment()
-                viewModel.setViewDisplayFragment(false) // Reset to prevent repeated navigation
-            }
-        }
-
-        viewModel.viewDrawingsFragment.observeForever {
-            if (it) {
-                navigateToDrawingListFragment()
-                viewModel.setViewDrawingsFragment(false)
-            }
-        }
         return binding.root
     }
 
-    /**
-     * Helper for navigating to draw fragment
-     */
-    private fun navigateToDrawFragment() {
-        Log.e("entry frag", "navigating to list view")
-        findNavController().navigate(R.id.action_go_to_display_fragment)
-    }
     /**
      * Helper for navigating to drawing list fragment
      */
     private fun navigateToDrawingListFragment(){
         findNavController().navigate(R.id.action_go_to_drawing_list_fragment)
     }
-    /**
-     * Clean up observers
-     */
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.viewDisplayFragment.removeObserver {  }
-    }
+
 }
