@@ -45,10 +45,13 @@ class DrawingListFragment : Fragment() {
             DrawingListView(
                 drawings = drawings,
                 onDrawingClick = { drawing ->
-                    // Handle drawing click, maybe navigate to a detail screen
+                    viewModel.loadDrawing(drawing.filename)
+
+                    // Navigate to the display fragment
+                    findNavController().navigate(R.id.action_go_to_display_fragment)
                 },
                 onDisplayClick = {
-                    findNavController().navigate(R.id.action_go_to_display_fragment)
+                   // findNavController().navigate(R.id.action_go_to_display_fragment)
                 }
             )
         }
@@ -80,13 +83,13 @@ fun DrawingListView(drawings: List<DrawingData>,
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Button(
-            onClick = onDisplayClick,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text("Display Button")
-        }
+//        Button(
+//            onClick = onDisplayClick,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//        ) {
+//            Text("Display Button")
+//        }
     }
 }
 

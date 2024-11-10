@@ -58,7 +58,10 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         viewModelScope.launch { repository.insertSampleDrawings() }
     }
 
-
+    fun loadDrawing(name: String) {
+        currentDrawingName = name
+        currentDrawingBitmap.value = _drawings.value?.get(name)
+    }
 //    // TODO: Load drawings from the repository
 //    suspend fun loadDrawings(): List<DrawingData> {
 //        val allDrawings = repository.getAllDrawings()
