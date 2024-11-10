@@ -54,6 +54,12 @@ class DrawingListFragment : Fragment() {
                     // Navigate to the display fragment
                     findNavController().navigate(R.id.action_go_to_display_fragment)
                 },
+                onDeleteClick = { drawing ->
+                    // Delete the selected drawing
+                    viewModel.viewModelScope.launch {
+                        viewModel.deleteDrawing(drawing)
+                    }
+                },
                 onCreateNewDrawingClick = {
                     showCreateNewDrawingDialog()
                 }
@@ -91,11 +97,13 @@ class DrawingListFragment : Fragment() {
 
 }
 
-
 @Composable
-fun DrawingListView(drawings: List<DrawingData>,
-                    onDrawingClick: (DrawingData) -> Unit,
-                    onCreateNewDrawingClick: () -> Unit) {
+fun DrawingListView(
+    drawings: List<DrawingData>,
+    onDrawingClick: (DrawingData) -> Unit,
+    onDeleteClick: (DrawingData) -> Unit,
+    onCreateNewDrawingClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -106,7 +114,11 @@ fun DrawingListView(drawings: List<DrawingData>,
                 .weight(1f)
         ) {
             items(drawings) { drawing ->
-                DrawingItem(drawing = drawing, onClick = { onDrawingClick(drawing) })
+                DrawingItem(
+                    drawing = drawing,
+                    onClick = { onDrawingClick(drawing) },
+                    onDeleteClick = { onDeleteClick(drawing) }
+                )
             }
         }
 
@@ -121,14 +133,30 @@ fun DrawingListView(drawings: List<DrawingData>,
     }
 }
 
+
 @Composable
-fun DrawingItem(drawing: DrawingData, onClick: () -> Unit) {
+fun DrawingItem(
+    drawing: DrawingData,
+    onClick: () -> Unit,
+    onDeleteClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable { onClick() },
+        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
     ) {
-        Text(text = drawing.filename)
+        Text(
+            text = drawing.filename,
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 16.dp)
+        )
+
+        Button(onClick = onDeleteClick) {
+            Text("Delete")
+        }
     }
 }
+
