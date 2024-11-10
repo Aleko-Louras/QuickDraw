@@ -55,7 +55,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     val drawingsList: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
 
     fun insertSampeData() {
-        viewModelScope.launch { repository.insertSampleDrawings() }
+        //viewModelScope.launch { repository.insertSampleDrawings() }
     }
 
     fun loadDrawing(name: String) {
