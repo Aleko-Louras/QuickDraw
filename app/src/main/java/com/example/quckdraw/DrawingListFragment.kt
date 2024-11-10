@@ -1,9 +1,11 @@
 package com.example.quckdraw
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,9 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.quckdraw.databinding.FragmentDisplayBinding
 import com.example.quckdraw.databinding.FragmentDrawingListViewBinding
+import kotlinx.coroutines.launch
 
 class DrawingListFragment : Fragment() {
 
@@ -50,13 +54,38 @@ class DrawingListFragment : Fragment() {
                     // Navigate to the display fragment
                     findNavController().navigate(R.id.action_go_to_display_fragment)
                 },
-                onDisplayClick = {
-                   // findNavController().navigate(R.id.action_go_to_display_fragment)
+                onCreateNewDrawingClick = {
+                    showCreateNewDrawingDialog()
                 }
             )
         }
 
         return binding.root
+    }
+    private fun showCreateNewDrawingDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Enter drawing name")
+
+        val input = EditText(requireContext())
+        input.hint = "Drawing name"
+        builder.setView(input)
+
+        builder.setPositiveButton("Create") { dialog, _ ->
+            val drawingName = input.text.toString()
+            if (drawingName.isNotBlank()) {
+                // Create a new drawing with the specified name
+                viewModel.viewModelScope.launch {
+                    viewModel.CreateNewDraw(drawingName)
+                    findNavController().navigate(R.id.action_go_to_display_fragment)
+                }
+            }
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
     }
 
 
@@ -66,7 +95,7 @@ class DrawingListFragment : Fragment() {
 @Composable
 fun DrawingListView(drawings: List<DrawingData>,
                     onDrawingClick: (DrawingData) -> Unit,
-                    onDisplayClick: () -> Unit) {
+                    onCreateNewDrawingClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,13 +112,12 @@ fun DrawingListView(drawings: List<DrawingData>,
 
         Spacer(modifier = Modifier.height(8.dp))
 
-//        Button(
-//            onClick = onDisplayClick,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//        ) {
-//            Text("Display Button")
-//        }
+        Button(
+            onClick = onCreateNewDrawingClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Create New Drawing")
+        }
     }
 }
 
