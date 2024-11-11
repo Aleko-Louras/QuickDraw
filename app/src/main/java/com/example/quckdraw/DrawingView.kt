@@ -6,6 +6,8 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -51,6 +53,15 @@ class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs)
                     drawingViewModel.updateShape(x, y)
                 }
                 invalidate()
+            }
+
+            MotionEvent.ACTION_UP -> {
+                // Save or update the drawing when the user lifts their finger
+                drawingViewModel.viewModelScope.launch {
+                    val drawingName = drawingViewModel.currentDrawingName ?: "Untitled"
+                    val filePath = "" // Specify the file path if needed
+                    drawingViewModel.updateDrawing(drawingName, filePath)
+                }
             }
         }
         return true

@@ -7,9 +7,10 @@ import android.view.*
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.quckdraw.databinding.FragmentDisplayBinding
-
+import kotlinx.coroutines.launch
 
 
 class DisplayFragment : Fragment() {
@@ -115,8 +116,8 @@ class DisplayFragment : Fragment() {
             dialog.show()
         }
 
-        binding.viewDrawingsButton.setOnClickListener{
-            findNavController().navigate(R.id.action_back_to_drawing_list_fragment)
+        binding.viewDrawingsButton.setOnClickListener {
+                findNavController().navigate(R.id.action_back_to_drawing_list_fragment)
         }
 
         return binding.root

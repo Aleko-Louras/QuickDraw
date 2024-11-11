@@ -47,7 +47,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         mutableMapOf<String, Bitmap>())
     val drawings = _drawings as LiveData<out Map<String,Bitmap>>
 
-    private var currentDrawingName: String? = null
+    var currentDrawingName: String? = null
     private val currentDrawingBitmap = MutableLiveData<Bitmap>()
 
     //val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
@@ -55,10 +55,18 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     val drawingsList: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
 
     fun insertSampeData() {
-        viewModelScope.launch { repository.insertSampleDrawings() }
+        //viewModelScope.launch { repository.insertSampleDrawings() }
+    }
+    suspend fun updateDrawing(fileName: String, filePath: String) {
+        _drawings.value = _drawings.value?.toMutableMap()?.apply {
+            this[fileName] = _bitmap
+        }
     }
 
-
+    fun loadDrawing(name: String) {
+        currentDrawingName = name
+        currentDrawingBitmap.value = _drawings.value?.get(name)
+    }
 //    // TODO: Load drawings from the repository
 //    suspend fun loadDrawings(): List<DrawingData> {
 //        val allDrawings = repository.getAllDrawings()
@@ -68,6 +76,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     // TODO:  Save a drawing, should call repository method
     suspend fun saveDrawing(fileName: String, filePath: String) {
         repository.saveDrawing(fileName, _bitmap,filePath)
+        //_drawings.value = repository.getAllDrawings().asLiveData().value
     }
 
     // TODO: Create a new drawing
@@ -90,6 +99,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
             put(fileName, _bitmap)
 
         }
+        saveDrawing(fileName, "")
     }
 
     // TODO: Delete a drawing, should call repository method
