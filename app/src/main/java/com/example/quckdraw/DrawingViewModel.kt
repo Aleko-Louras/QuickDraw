@@ -61,21 +61,18 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         //viewModelScope.launch { repository.insertSampleDrawings() }
     }
     suspend fun updateDrawing(fileName: String, filePath: String) {
-        // Ensure the file path is not empty
         val path = if (filePath.isNotBlank()) filePath else File(repository.filesDir, "$fileName.png").absolutePath
 
-        // Save the current bitmap to the specified path
         val file = File(path)
         FileOutputStream(file).use { out ->
             _bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
         }
-
-        // Update the drawing entry in the repository/database
         val drawingData = DrawingData(filename = fileName, path = path, timestamp = Date())
         repository.updateDrawing(drawingData)
     }
 
-
+    //ChatGPT helped to debug the loadDrawing, it added  currentDrawingBitmap.value = _bitmapand  to
+    //to set the current bit map to be correct one 
     fun loadDrawing(name: String) {
         currentDrawingName = name
         val file = File(repository.filesDir, "$name.png")
@@ -87,6 +84,8 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         canvas.setBitmap(_bitmap)
         currentDrawingBitmap.value = _bitmap
     }
+
+
 //    // TODO: Load drawings from the repository
 //    suspend fun loadDrawings(): List<DrawingData> {
 //        val allDrawings = repository.getAllDrawings()
@@ -101,20 +100,12 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
 
     // TODO: Create a new drawing
     suspend fun CreateNewDraw(fileName: String) {
-        // Reset the bitmap for the new drawing
-        _bitmap.eraseColor(Color.WHITE) // Clear the bitmap with a white background
-
-        // Reset the current path
+        _bitmap.eraseColor(Color.WHITE)
         currentPath.reset()
-
-        // Reset pen properties to defaults if needed
         pen = Pen()
         _penLiveData.value = pen
-
         currentDrawingName = fileName
         currentDrawingBitmap.value = _bitmap
-
-        // Add the new drawing to the drawings map with the file name as the key
         _drawings.value = _drawings.value?.toMutableMap()?.apply {
             put(fileName, _bitmap)
 
@@ -226,8 +217,9 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
      * returns the global bitmap
      */
     fun getBitmap(): Bitmap {
-        return _bitmap
+        return currentDrawingBitmap.value ?: _bitmap
     }
+
 
     /**
      * sets the pen color to passed in color
