@@ -56,7 +56,6 @@ class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs)
             }
 
             MotionEvent.ACTION_UP -> {
-                // Save or update the drawing when the user lifts their finger
                 drawingViewModel.viewModelScope.launch {
                     val drawingName = drawingViewModel.currentDrawingName ?: "Untitled"
                     val filePath = "" // Specify the file path if needed
