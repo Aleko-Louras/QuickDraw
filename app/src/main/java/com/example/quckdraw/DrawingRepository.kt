@@ -17,7 +17,7 @@ class DrawingRepository(
 ) {
 
     // TODO: Function to save a bitmap to file and insert metadata in the Room database
-    fun saveDrawing(drawingName: String, bitmap: Bitmap, path: String) {
+    fun saveDrawing(drawingName: String, bitmap: Bitmap) {
         scope.launch {
             val filename = "$drawingName.png"
             val file = File(filesDir, filename)
@@ -29,7 +29,7 @@ class DrawingRepository(
             // Create the DrawingData object without the 'file' parameter
             val drawingEntity = DrawingData(
                 filename = filename,
-                path = path,
+                path = file.absolutePath,
                 timestamp = Date()
             )
             drawingDao.insertDrawing(drawingEntity)

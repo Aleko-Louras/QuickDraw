@@ -74,8 +74,8 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
 //    }
 
     // TODO:  Save a drawing, should call repository method
-    suspend fun saveDrawing(fileName: String, filePath: String) {
-        repository.saveDrawing(fileName, _bitmap,filePath)
+    suspend fun saveDrawing(fileName: String) {
+        repository.saveDrawing(fileName, _bitmap)
         //_drawings.value = repository.getAllDrawings().asLiveData().value
     }
 
@@ -99,7 +99,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
             put(fileName, _bitmap)
 
         }
-        saveDrawing(fileName, "")
+        saveDrawing(fileName)
     }
 
     // TODO: Delete a drawing, should call repository method
