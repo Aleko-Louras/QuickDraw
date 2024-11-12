@@ -1,6 +1,7 @@
 package com.example.quckdraw
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import androidx.lifecycle.LiveData
@@ -77,7 +78,14 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
 
     fun loadDrawing(name: String) {
         currentDrawingName = name
-        currentDrawingBitmap.value = _drawings.value?.get(name)
+        val file = File(repository.filesDir, "$name.png")
+        if (file.exists()) {
+            _bitmap = BitmapFactory.decodeFile(file.absolutePath).copy(Bitmap.Config.ARGB_8888, true)
+        } else {
+            _bitmap = Bitmap.createBitmap(drawingWidth, drawingHeight, Bitmap.Config.ARGB_8888)
+        }
+        canvas.setBitmap(_bitmap)
+        currentDrawingBitmap.value = _bitmap
     }
 //    // TODO: Load drawings from the repository
 //    suspend fun loadDrawings(): List<DrawingData> {
@@ -128,7 +136,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     private var startX = 0f
     private var startY = 0f
 
-    private val _bitmap = Bitmap.createBitmap(drawingWidth, drawingHeight, Bitmap.Config.ARGB_8888)
+    private var _bitmap = Bitmap.createBitmap(drawingWidth, drawingHeight, Bitmap.Config.ARGB_8888)
     private val canvas = Canvas(_bitmap)
     private val paint: Paint = Paint().apply {
         style = Paint.Style.STROKE
