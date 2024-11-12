@@ -13,7 +13,7 @@ import java.util.Date
 class DrawingRepository(
     private val scope: CoroutineScope,
     private val drawingDao: DrawingDAO,
-    private val filesDir: File
+    val filesDir: File
 ) {
 
     // TODO: Function to save a bitmap to file and insert metadata in the Room database
@@ -33,6 +33,11 @@ class DrawingRepository(
                 timestamp = Date()
             )
             drawingDao.insertDrawing(drawingEntity)
+        }
+    }
+    fun updateDrawing(drawingData: DrawingData) {
+        scope.launch {
+            drawingDao.updateDrawing(drawingData)
         }
     }
 

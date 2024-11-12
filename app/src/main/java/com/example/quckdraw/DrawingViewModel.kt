@@ -18,6 +18,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.FileOutputStream
+import java.util.Date
 
 // class of pen
 data class Pen(
@@ -58,10 +60,20 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         //viewModelScope.launch { repository.insertSampleDrawings() }
     }
     suspend fun updateDrawing(fileName: String, filePath: String) {
-        _drawings.value = _drawings.value?.toMutableMap()?.apply {
-            this[fileName] = _bitmap
+        // Ensure the file path is not empty
+        val path = if (filePath.isNotBlank()) filePath else File(repository.filesDir, "$fileName.png").absolutePath
+
+        // Save the current bitmap to the specified path
+        val file = File(path)
+        FileOutputStream(file).use { out ->
+            _bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
         }
+
+        // Update the drawing entry in the repository/database
+        val drawingData = DrawingData(filename = fileName, path = path, timestamp = Date())
+        repository.updateDrawing(drawingData)
     }
+
 
     fun loadDrawing(name: String) {
         currentDrawingName = name

@@ -9,6 +9,7 @@ import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 //this is a DB, we have 1 entity (so we'll get 1 table in SQLite)
@@ -60,7 +61,8 @@ interface DrawingDAO {
     fun latestDrawing(): Flow<DrawingData>
     @Query("SELECT * from drawings ORDER BY timestamp DESC")
     fun allDrawings(): Flow<List<DrawingData>>
-
+    @Update
+    suspend fun updateDrawing(data: DrawingData)
     @Delete
     suspend fun deleteDrawing(drawing: DrawingData)
 }
