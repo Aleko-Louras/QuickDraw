@@ -8,6 +8,9 @@
       <SelectionState runConfigName="testDrawingListDisplaysItemsAndButtons()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="ComposeUITest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

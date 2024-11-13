@@ -10,7 +10,7 @@ class ComposeUITest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-    
+
     @Test
     fun testDrawingListDisplaysItemsAndButtons() {
         composeTestRule.setContent {
@@ -56,6 +56,25 @@ class ComposeUITest {
             .assertExists()
             .assertHasClickAction()
             .performClick()
+    }
+
+    @Test
+    fun testDrawingItemWasDeleted(){
+        composeTestRule.setContent {
+            DrawingListView(
+                drawings = listOf(
+                    DrawingData("Drawing 1", "/path/to/drawing1", timestamp = Date()),
+                    DrawingData("Drawing 2", "/path/to/drawing2", timestamp = Date())
+                ),
+                onDrawingClick = {},
+                onDeleteClick = {},
+                onCreateNewDrawingClick = {}
+            )
+        }
+        composeTestRule.onAllNodesWithText("Delete")[0].performClick()
+        composeTestRule.onNodeWithText("Mock Drawing").assertDoesNotExist()
+
+
     }
 
 
