@@ -61,7 +61,8 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     }
 
     //ChatGPT helped to debug the loadDrawing, it added  currentDrawingBitmap.value = _bitmapand  to
-    //to set the current bit map to be correct one 
+    //to set the current bit map to be correct one
+    // load the selected drawing to display page
     fun loadDrawing(name: String) {
         currentDrawingName = name
         val file = File(repository.filesDir, name)
