@@ -45,12 +45,13 @@ class DrawingListFragment : Fragment() {
         val binding = FragmentDrawingListViewBinding.inflate(layoutInflater)
 
         binding.composeView1.setContent {
+            //initialize the drawings to observe as state, and recompose them in the drawing list view.
+            //also pass in the lambda functions for each click listener
             val drawings by viewModel.drawingsList.observeAsState(emptyList())
             DrawingListView(
                 drawings = drawings,
                 onDrawingClick = { drawing ->
                     viewModel.loadDrawing(drawing.filename)
-
                     // Navigate to the display fragment
                     findNavController().navigate(R.id.action_go_to_display_fragment)
                 },
@@ -68,6 +69,11 @@ class DrawingListFragment : Fragment() {
 
         return binding.root
     }
+
+
+    /**
+     * Helper function to show the dialog for creating a new drawing
+     */
     private fun showCreateNewDrawingDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Enter drawing name")
@@ -79,7 +85,7 @@ class DrawingListFragment : Fragment() {
         builder.setPositiveButton("Create") { dialog, _ ->
             val drawingName = input.text.toString()
             if (drawingName.isNotBlank()) {
-                // Create a new drawing with the specified name
+                // Create a new drawing with the specified name and save it
                 viewModel.viewModelScope.launch {
                     viewModel.CreateNewDraw(drawingName)
                     findNavController().navigate(R.id.action_go_to_display_fragment)
@@ -97,6 +103,11 @@ class DrawingListFragment : Fragment() {
 
 }
 
+/**
+ * Composable for displaying a list of drawings. Takes in the list of drawings, a lambda for when a drawing is clicked,
+ * a lambda for when a delete button is clicked, and a lambda for when the "Create New Drawing" button is clicked. Utilizes
+ * a lazy column as a recycler view with a single button to create a new drawing.
+ */
 @Composable
 fun DrawingListView(
     drawings: List<DrawingData>,
@@ -133,7 +144,9 @@ fun DrawingListView(
     }
 }
 
-
+/**
+ * Composable for displaying a single drawing item in the list. Displays a  name and delete button for each item.
+ */
 @Composable
 fun DrawingItem(
     drawing: DrawingData,

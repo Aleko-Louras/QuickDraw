@@ -116,6 +116,7 @@ class DisplayFragment : Fragment() {
             dialog.show()
         }
 
+        //button listener to navigate to drawing list
         binding.viewDrawingsButton.setOnClickListener {
                 findNavController().navigate(R.id.action_back_to_drawing_list_fragment)
         }

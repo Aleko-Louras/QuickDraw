@@ -31,6 +31,7 @@ class Converters {
 
 
 //Defines a SQLITE table, basically
+//Defines a data class for a drawing for roomdb saving
 @Entity(tableName="drawings")
 data class DrawingData(
     var filename: String,

@@ -23,7 +23,7 @@ class EntryFragment : Fragment() {
         // Inflate the layout for this fragment using ViewBinding
         val binding = FragmentEntryBinding.inflate(inflater, container, false)
 
-        //Timer for splashscreen navigation
+        //Timer for splashscreen navigation, then navigate to drawing list fragment
         android.os.Handler(Looper.getMainLooper()).postDelayed({
             navigateToDrawingListFragment()
         }, 2000)

@@ -16,7 +16,9 @@ class DrawingRepository(
     val filesDir: File
 ) {
 
-    // TODO: Function to save a bitmap to file and insert metadata in the Room database
+    /**
+     * Saves a drawing to the database and files directory.
+     */
     fun saveDrawing(drawingName: String, bitmap: Bitmap) {
         scope.launch {
             val filename = "$drawingName.png"
@@ -35,6 +37,10 @@ class DrawingRepository(
             drawingDao.insertDrawing(drawingEntity)
         }
     }
+
+    /**
+     * Updates a drawing in the database.
+     */
     fun updateDrawing(drawingData: DrawingData) {
         scope.launch {
             drawingDao.updateDrawing(drawingData)
@@ -44,22 +50,13 @@ class DrawingRepository(
     fun getLatestDrawing(): Flow<DrawingData> {
         return drawingDao.latestDrawing()
     }
+
+    /**
+     * Retrieves all drawings from the database.
+     */
     fun getAllDrawings(): Flow<List<DrawingData>> {
         return drawingDao.allDrawings()
     }
-
-//    suspend fun insertSampleDrawings() {
-//        val sampleDrawings = listOf(
-//            DrawingData("drawing1", "path/to/drawing1", Date()),
-//            DrawingData("drawing2", "path/to/drawing2", Date()),
-//            DrawingData("drawing3", "path/to/drawing3", Date())
-//        )
-//        sampleDrawings.forEach { drawing ->
-//            drawingDao.insertDrawing(drawing)
-//        }
-//    }
-
-
 
     // TODO: Function to load a bitmap from file
     fun loadDrawing(drawingData: DrawingData): Bitmap? {
@@ -79,7 +76,4 @@ class DrawingRepository(
             file.delete()
         }
     }
-
-    // TODO: Function to load all the names of drawings for the list of drawings
-
 }
