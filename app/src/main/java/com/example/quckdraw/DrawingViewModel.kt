@@ -61,7 +61,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         //viewModelScope.launch { repository.insertSampleDrawings() }
     }
     suspend fun updateDrawing(fileName: String, filePath: String) {
-        val path = if (filePath.isNotBlank()) filePath else File(repository.filesDir, "$fileName.png").absolutePath
+        val path = if (filePath.isNotBlank()) filePath else File(repository.filesDir, fileName).absolutePath
 
         val file = File(path)
         FileOutputStream(file).use { out ->
