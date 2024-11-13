@@ -75,7 +75,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     //to set the current bit map to be correct one 
     fun loadDrawing(name: String) {
         currentDrawingName = name
-        val file = File(repository.filesDir, "$name.png")
+        val file = File(repository.filesDir, name)
         if (file.exists()) {
             _bitmap = BitmapFactory.decodeFile(file.absolutePath).copy(Bitmap.Config.ARGB_8888, true)
         } else {
@@ -108,7 +108,6 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         currentDrawingBitmap.value = _bitmap
         _drawings.value = _drawings.value?.toMutableMap()?.apply {
             put(fileName, _bitmap)
-
         }
         saveDrawing(fileName)
     }
