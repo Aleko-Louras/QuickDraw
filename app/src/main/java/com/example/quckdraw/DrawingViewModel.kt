@@ -42,18 +42,13 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
 
     private val _drawings = MutableLiveData(
         mutableMapOf<String, Bitmap>())
-    val drawings = _drawings as LiveData<out Map<String,Bitmap>>
 
     var currentDrawingName: String? = null
     private val currentDrawingBitmap = MutableLiveData<Bitmap>()
 
-    //val latestDrawing: LiveData<DrawingData> = repository.getLatestDrawing().asLiveData()
-    // Expose drawings list as LiveData to automatically update when the repository changes
     val drawingsList: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
 
-    fun insertSampeData() {
-        //viewModelScope.launch { repository.insertSampleDrawings() }
-    }
+    // update the drawing if the drawing is already created
     suspend fun updateDrawing(fileName: String, filePath: String) {
         val path = if (filePath.isNotBlank()) filePath else File(repository.filesDir, fileName).absolutePath
 
@@ -79,20 +74,13 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         currentDrawingBitmap.value = _bitmap
     }
 
-
-//    // TODO: Load drawings from the repository
-//    suspend fun loadDrawings(): List<DrawingData> {
-//        val allDrawings = repository.getAllDrawings()
-//        return allDrawings
-//    }
-
-    // TODO:  Save a drawing, should call repository method
+    // save the file's drawing
     suspend fun saveDrawing(fileName: String) {
         repository.saveDrawing(fileName, _bitmap)
         //_drawings.value = repository.getAllDrawings().asLiveData().value
     }
 
-    // TODO: Create a new drawing
+    // create a new drawing page
     suspend fun createNewDrawing(fileName: String): Boolean {
         if (!repository.isDrawingNameUnique(fileName) ) {
             return false
@@ -110,7 +98,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         return true
     }
 
-    // TODO: Delete a drawing, should call repository method
+    // delete the selected drawing
     suspend fun deleteDrawing(drawingData: DrawingData){
         repository.deleteDrawing(drawingData)
     }
