@@ -9,16 +9,6 @@ import java.util.Date
 //apparently Room can't handle Date objects directly...
 //Room will use these converters when going from DB <-> Kotlin
 class Converters {
-
-    @TypeConverter
-    fun fromFile(file: File?): String? {
-        return file?.absolutePath
-    }
-
-    @TypeConverter
-    fun toFile(path: String?): File? {
-        return path?.let { File(it) }
-    }
     @TypeConverter
     fun fromDate(date: Date?): Long? {
         return date?.time
