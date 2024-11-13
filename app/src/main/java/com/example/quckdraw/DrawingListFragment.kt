@@ -88,6 +88,7 @@ class DrawingListFragment : Fragment() {
                 // Create a new drawing with the specified name and save it
                 viewModel.viewModelScope.launch {
                     if (viewModel.createNewDrawing(drawingName)) {
+                        //after the name is confirmed then navigate to display fragment
                         findNavController().navigate(R.id.action_go_to_display_fragment)
                     } else {
                         Toast.makeText(context, "A drawing with this name already exists.", Toast.LENGTH_SHORT).show()

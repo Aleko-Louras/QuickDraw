@@ -54,7 +54,7 @@ class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs)
             MotionEvent.ACTION_UP -> {
                 drawingViewModel.viewModelScope.launch {
                     val drawingName = drawingViewModel.currentDrawingName ?: "Untitled"
-                    val filePath = "" 
+                    val filePath = ""
                     drawingViewModel.updateDrawing(drawingName, filePath)
                 }
             }
