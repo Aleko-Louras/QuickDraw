@@ -22,6 +22,11 @@ class DrawingRepository(
     fun saveDrawing(drawingName: String, bitmap: Bitmap) {
         scope.launch {
             val filename = "$drawingName.png"
+
+            val exists = drawingDao.doesDrawingExist(filename) > 0
+            if (exists) {
+                return@launch
+            }
             val file = File(filesDir, filename)
 
             FileOutputStream(file).use { out ->
@@ -36,6 +41,11 @@ class DrawingRepository(
             )
             drawingDao.insertDrawing(drawingEntity)
         }
+    }
+
+    suspend fun isDrawingNameUnique(drawingName: String): Boolean {
+        val filename = "$drawingName.png"
+        return drawingDao.doesDrawingExist(filename) == 0
     }
 
     /**

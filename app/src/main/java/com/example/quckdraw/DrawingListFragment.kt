@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,7 +28,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
-import com.example.quckdraw.databinding.FragmentDisplayBinding
 import com.example.quckdraw.databinding.FragmentDrawingListViewBinding
 import kotlinx.coroutines.launch
 
@@ -87,8 +87,11 @@ class DrawingListFragment : Fragment() {
             if (drawingName.isNotBlank()) {
                 // Create a new drawing with the specified name and save it
                 viewModel.viewModelScope.launch {
-                    viewModel.CreateNewDraw(drawingName)
-                    findNavController().navigate(R.id.action_go_to_display_fragment)
+                    if (viewModel.createNewDrawing(drawingName)) {
+                        findNavController().navigate(R.id.action_go_to_display_fragment)
+                    } else {
+                        Toast.makeText(context, "A drawing with this name already exists.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
             dialog.dismiss()

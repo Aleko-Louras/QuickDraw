@@ -56,6 +56,8 @@ interface DrawingDAO {
     //marked as suspend so the thread can yield in case the DB update is slow
     @Insert
     suspend fun insertDrawing(data: DrawingData)
+    @Query("SELECT COUNT(*) FROM drawings WHERE filename = :filename")
+    suspend fun doesDrawingExist(filename: String): Int
 
     @Query("SELECT * from drawings ORDER BY timestamp DESC LIMIT 1")
     fun latestDrawing(): Flow<DrawingData>

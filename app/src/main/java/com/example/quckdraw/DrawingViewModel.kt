@@ -11,14 +11,8 @@ import android.graphics.Path
 import android.graphics.Paint
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import java.io.File
 import kotlin.math.pow
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.FileOutputStream
 import java.util.Date
 
@@ -99,7 +93,10 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     }
 
     // TODO: Create a new drawing
-    suspend fun CreateNewDraw(fileName: String) {
+    suspend fun createNewDrawing(fileName: String): Boolean {
+        if (!repository.isDrawingNameUnique(fileName) ) {
+            return false
+        }
         _bitmap.eraseColor(Color.WHITE)
         currentPath.reset()
         pen = Pen()
@@ -110,14 +107,13 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
             put(fileName, _bitmap)
         }
         saveDrawing(fileName)
+        return true
     }
 
     // TODO: Delete a drawing, should call repository method
     suspend fun deleteDrawing(drawingData: DrawingData){
         repository.deleteDrawing(drawingData)
     }
-
-
     //size of the canvas
     private val drawingWidth = 800
     private val drawingHeight = 800
