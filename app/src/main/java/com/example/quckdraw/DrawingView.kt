@@ -17,10 +17,6 @@ class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs)
         this.drawingViewModel = viewModel
     }
 
-    fun getBitMap():Bitmap{
-        return drawingViewModel.getBitmap()
-    }
-
     /**
      * Initialize canvas with bitmap for drawing fragment
      */
@@ -54,11 +50,11 @@ class DrawingView(context: Context, attrs: AttributeSet?) : View(context, attrs)
                 }
                 invalidate()
             }
-
+            //only when user release the finger after drawing, it will save the current drawing action
             MotionEvent.ACTION_UP -> {
                 drawingViewModel.viewModelScope.launch {
                     val drawingName = drawingViewModel.currentDrawingName ?: "Untitled"
-                    val filePath = "" // Specify the file path if needed
+                    val filePath = "" 
                     drawingViewModel.updateDrawing(drawingName, filePath)
                 }
             }

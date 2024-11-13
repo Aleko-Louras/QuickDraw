@@ -42,7 +42,9 @@ class DrawingRepository(
             drawingDao.insertDrawing(drawingEntity)
         }
     }
-
+    /**
+    * check the naming of file is already exist
+    */
     suspend fun isDrawingNameUnique(drawingName: String): Boolean {
         val filename = drawingName
         return drawingDao.doesDrawingExist(filename) == 0
@@ -57,6 +59,9 @@ class DrawingRepository(
         }
     }
 
+    /**
+     * get the lastest drawing
+     */
     fun getLatestDrawing(): Flow<DrawingData> {
         return drawingDao.latestDrawing()
     }
@@ -68,17 +73,9 @@ class DrawingRepository(
         return drawingDao.allDrawings()
     }
 
-    // TODO: Function to load a bitmap from file
-    fun loadDrawing(drawingData: DrawingData): Bitmap? {
-        val file = File(filesDir, drawingData.filename)
-        return if (file.exists()) {
-            BitmapFactory.decodeFile(file.absolutePath)
-        } else {
-            null
-        }
-    }
-
-    // TODO: Function to delete a drawing
+    /**
+     * delete the selected drawing
+     */
     fun deleteDrawing(drawingData: DrawingData) {
         scope.launch {
             drawingDao.deleteDrawing(drawingData)

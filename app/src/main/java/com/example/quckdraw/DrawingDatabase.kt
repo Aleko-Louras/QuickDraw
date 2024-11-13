@@ -21,14 +21,9 @@ abstract class DrawingDatabase : RoomDatabase(){
     abstract fun drawingDAO(): DrawingDAO
 
     companion object {
-        // Singleton prevents multiple instances of database opening at the
-        // same time.
         @Volatile
         private var INSTANCE: DrawingDatabase? = null
 
-
-        //When we want a DB we call this (basically static) method
-        //val theDB = DrawingDatabase.getDatabase(myContext)
         fun getDatabase(context: Context): DrawingDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
