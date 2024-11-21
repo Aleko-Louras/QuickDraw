@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_go_to_display_fragment"
             app:destination="@id/displayFragment" />
+        <action
+            android:id="@+id/action_go_to_auth_fragment"
+            app:destination="@id/firebaseAuthFragment" />
     </fragment>
 
     <fragment

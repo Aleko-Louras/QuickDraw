@@ -29,6 +29,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.quckdraw.databinding.FragmentDrawingListViewBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 import kotlinx.coroutines.launch
 
@@ -63,6 +66,10 @@ class DrawingListFragment : Fragment() {
                 },
                 onCreateNewDrawingClick = {
                     showCreateNewDrawingDialog()
+                },
+                onSignOutUser = {
+                    FirebaseAuth.getInstance().signOut()
+                    findNavController().navigate(R.id.action_go_to_auth_fragment)
                 }
             )
         }
@@ -117,7 +124,8 @@ fun DrawingListView(
     drawings: List<DrawingData>,
     onDrawingClick: (DrawingData) -> Unit,
     onDeleteClick: (DrawingData) -> Unit,
-    onCreateNewDrawingClick: () -> Unit
+    onCreateNewDrawingClick: () -> Unit,
+    onSignOutUser: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -144,6 +152,11 @@ fun DrawingListView(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create New Drawing")
+        }
+        Button(
+            onClick = onSignOutUser,
+            modifier = Modifier.fillMaxWidth()) {
+            Text("Sign Out")
         }
     }
 }
