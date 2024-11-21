@@ -60,7 +60,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         repository.updateDrawing(drawingData)
     }
 
-    //ChatGPT helped to debug the loadDrawing, it added  currentDrawingBitmap.value = _bitmapand  to
+    //ChatGPT helped to debug the loadDrawing, it added  currentDrawingBitmap.value = _bitmap and  to
     //to set the current bit map to be correct one
     // load the selected drawing to display page
     fun loadDrawing(name: String) {

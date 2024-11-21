@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_go_to_display_fragment"
             app:destination="@id/displayFragment" />
+        <action
+            android:id="@+id/action_go_to_auth_fragment"
+            app:destination="@id/firebaseAuthFragment"/>
     </fragment>
 
     <fragment
@@ -37,5 +40,13 @@
     <action
         android:id="@+id/action_back_to_drawing_list_fragment"
         app:destination="@id/drawingListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/firebaseAuthFragment"
+        android:name="com.example.quickdraw.FirebaseAuthFragment"
+        android:label="fragment_auth">
+        <action
+            android:id="@+id/action_go_to_drawing_list_fragment"
+            app:destination="@id/drawingListFragment" />
     </fragment>
 </navigation>

@@ -29,6 +29,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.quckdraw.databinding.FragmentDrawingListViewBinding
+
 import kotlinx.coroutines.launch
 
 class DrawingListFragment : Fragment() {
@@ -43,7 +44,6 @@ class DrawingListFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         val binding = FragmentDrawingListViewBinding.inflate(layoutInflater)
-
         binding.composeView1.setContent {
             //initialize the drawings to observe as state, and recompose them in the drawing list view.
             //also pass in the lambda functions for each click listener

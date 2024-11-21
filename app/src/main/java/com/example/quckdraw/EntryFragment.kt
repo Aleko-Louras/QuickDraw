@@ -25,17 +25,22 @@ class EntryFragment : Fragment() {
 
         //Timer for splashscreen navigation, then navigate to drawing list fragment
         android.os.Handler(Looper.getMainLooper()).postDelayed({
-            navigateToDrawingListFragment()
+            navigateToAuthFragment()
         }, 2000)
 
         return binding.root
     }
 
+//    /**
+//     * Helper for navigating to drawing list fragment
+//     */
+//    private fun navigateToDrawingListFragment(){
+//        findNavController().navigate(R.id.action_go_to_drawing_list_fragment)
+//    }
     /**
-     * Helper for navigating to drawing list fragment
+     * Helper for navigating to auth fragment
      */
-    private fun navigateToDrawingListFragment(){
-        findNavController().navigate(R.id.action_go_to_drawing_list_fragment)
+    private fun navigateToAuthFragment(){
+        findNavController().navigate(R.id.action_go_to_auth_fragment)
     }
-
 }
