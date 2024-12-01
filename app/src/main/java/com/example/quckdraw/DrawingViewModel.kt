@@ -65,13 +65,11 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         val bitmap = currentDrawingBitmap.value
 
         val storageReference = Firebase.storage.reference
-        //val filePath = "${Firebase.auth.currentUser?.uid}/${currentDrawingName}.png"
-        val filePath = "${Firebase.auth.currentUser?.uid}/test.png"
+        val filePath = "${Firebase.auth.currentUser?.uid}/${currentDrawingName}.png"
 
         val baos = ByteArrayOutputStream()
         bitmap?.compress(Bitmap.CompressFormat.PNG, 0, baos)
-        //val imageData = baos.toByteArray()
-        val imageData = generateBitmap()
+        val imageData = baos.toByteArray()
 
         viewModelScope.launch {
             try {

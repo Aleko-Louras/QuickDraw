@@ -76,6 +76,7 @@ class DrawingListFragment : Fragment() {
                 },
                 onUploadClick = { drawing ->
                     viewModel.viewModelScope.launch {
+                        viewModel.loadDrawing(drawing.filename)
                         viewModel.uploadDrawing(drawing)
                     }
                 },
