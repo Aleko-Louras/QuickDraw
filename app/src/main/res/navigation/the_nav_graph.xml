@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_go_to_auth_fragment"
             app:destination="@id/firebaseAuthFragment" />
+        <action
+            android:id="@+id/action_drawingListFragment_to_cloudDrawingsFragment"
+            app:destination="@id/cloudDrawingsFragment" />
     </fragment>
 
     <fragment
@@ -52,4 +55,10 @@
             android:id="@+id/action_go_to_drawing_list_fragment"
             app:destination="@id/drawingListFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/cloudDrawingsFragment"
+        android:name="com.example.quckdraw.CloudDrawingsFragment"
+        android:label="fragment_cloud_drawings"
+        tools:layout="@layout/fragment_cloud_drawings" />
 </navigation>

@@ -86,6 +86,9 @@ class DrawingListFragment : Fragment() {
                 onSignOutUser = {
                     FirebaseAuth.getInstance().signOut()
                     findNavController().navigate(R.id.action_go_to_auth_fragment)
+                },
+                onSharedClick = {
+                    findNavController().navigate((R.id.action_drawingListFragment_to_cloudDrawingsFragment))
                 }
             )
         }
@@ -142,7 +145,8 @@ fun DrawingListView(
     onDeleteClick: (DrawingData) -> Unit,
     onUploadClick: (DrawingData) -> Unit,
     onCreateNewDrawingClick: () -> Unit,
-    onSignOutUser: () -> Unit
+    onSignOutUser: () -> Unit,
+    onSharedClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -176,6 +180,11 @@ fun DrawingListView(
             modifier = Modifier.fillMaxWidth()) {
             Text("Sign Out")
         }
+        Button(
+            onClick = onSharedClick,
+            modifier = Modifier.fillMaxWidth()) {
+            Text("Shared drawings")
+        }
     }
 }
 
@@ -187,7 +196,7 @@ fun DrawingItem(
     drawing: DrawingData,
     onClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onUploadClick: () -> Unit
+    onUploadClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -240,4 +249,6 @@ fun DrawingItem(
         }
     }
 }
+
+
 

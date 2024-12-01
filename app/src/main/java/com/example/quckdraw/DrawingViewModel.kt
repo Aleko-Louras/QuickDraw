@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.StorageReference
@@ -61,11 +62,38 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
 
     val drawingsList: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
 
+    private val _drawingUrls = MutableLiveData<List<String>>()
+    val drawingUrls: LiveData<List<String>> get() = _drawingUrls
+
+    fun fetchDrawingUrls() {
+        val storageReference = Firebase.storage.reference.child("drawings/")
+
+        storageReference.listAll()
+            .addOnSuccessListener { result ->
+                val urls = mutableListOf<String>()
+                val tasks = result.items.map { it.downloadUrl }
+                Tasks.whenAllComplete(tasks).addOnSuccessListener {
+                    for (task in tasks) {
+                        if (task.isSuccessful) {
+                            urls.add(task.result.toString())
+                        }
+                    }
+                    _drawingUrls.value = urls
+                }
+                .addOnFailureListener {
+                    _drawingUrls.value = emptyList()
+                }
+            }
+    }
+
     fun uploadDrawing(drawingData: DrawingData) {
         val bitmap = currentDrawingBitmap.value
 
         val storageReference = Firebase.storage.reference
-        val filePath = "${Firebase.auth.currentUser?.uid}/${currentDrawingName}.png"
+        //val filePath = "${Firebase.auth.currentUser?.uid}/${currentDrawingName}.png"
+        //val filePath = "drawings/${Firebase.auth.currentUser?.uid}/${currentDrawingName}.png"
+        val filePath = "drawings/${currentDrawingName}.png"
+
 
         val baos = ByteArrayOutputStream()
         bitmap?.compress(Bitmap.CompressFormat.PNG, 0, baos)
@@ -97,30 +125,16 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         }
     }
 
-    fun generateBitmap(): ByteArray {
-        //draw a simple picture using a bitmap + canvas
-        val bitmap =
-            Bitmap.createBitmap(400, 400, Bitmap.Config.ARGB_8888, true)
-        val canvas = Canvas(bitmap)
-        val paint = Paint()
-        paint.color = Color.RED
-        canvas.drawCircle(
-            Random.nextFloat() * bitmap.width,
-            Random.nextFloat() * bitmap.height,
-            100f,
-            paint
-        )
-        paint.color = Color.BLUE
-        canvas.drawCircle(
-            Random.nextFloat() * bitmap.width,
-            Random.nextFloat() * bitmap.height,
-            150f,
-            paint
-        )
-        val baos = ByteArrayOutputStream()
-        //save it into PNG format (in memory, not a file)
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos)
-        return baos.toByteArray() //bytes of the PNG
+    suspend fun downladImage(ref: StorageReference, path: String): Bitmap? {
+        val fileRef = ref.child(path)
+        return suspendCoroutine {
+            fileRef.getBytes(10 * 1024 * 1024).addOnSuccessListener { bytes ->
+                it.resume(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+            }.addOnFailureListener { e ->
+                Log.e("DOWNLOAD_IMAGE", "Failed to get image $e")
+                it.resume(null)
+            }
+        }
     }
 
     // update the drawing if the drawing is already created
