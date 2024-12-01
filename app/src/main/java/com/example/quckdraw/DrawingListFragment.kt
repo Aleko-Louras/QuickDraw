@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,14 +16,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -62,6 +72,11 @@ class DrawingListFragment : Fragment() {
                     // Delete the selected drawing
                     viewModel.viewModelScope.launch {
                         viewModel.deleteDrawing(drawing)
+                    }
+                },
+                onUploadClick = { drawing ->
+                    viewModel.viewModelScope.launch {
+                        viewModel.uploadDrawing(drawing)
                     }
                 },
                 onCreateNewDrawingClick = {
@@ -124,6 +139,7 @@ fun DrawingListView(
     drawings: List<DrawingData>,
     onDrawingClick: (DrawingData) -> Unit,
     onDeleteClick: (DrawingData) -> Unit,
+    onUploadClick: (DrawingData) -> Unit,
     onCreateNewDrawingClick: () -> Unit,
     onSignOutUser: () -> Unit
 ) {
@@ -140,7 +156,8 @@ fun DrawingListView(
                 DrawingItem(
                     drawing = drawing,
                     onClick = { onDrawingClick(drawing) },
-                    onDeleteClick = { onDeleteClick(drawing) }
+                    onDeleteClick = { onDeleteClick(drawing) },
+                    onUploadClick = { onUploadClick(drawing)}
                 )
             }
         }
@@ -168,24 +185,57 @@ fun DrawingListView(
 fun DrawingItem(
     drawing: DrawingData,
     onClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    onUploadClick: () -> Unit
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
-            .clickable { onClick() },
-        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            .clickable { onClick() }
     ) {
         Text(
             text = drawing.filename,
             modifier = Modifier
-                .weight(1f)
-                .padding(end = 16.dp)
+                .fillMaxWidth()
+                .padding(bottom = 8.dp) // Space between text and buttons
         )
 
-        Button(onClick = onDeleteClick) {
-            Text("Delete")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = onUploadClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
+                modifier = Modifier
+                    .height(36.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.AddCircle,
+                    contentDescription = "Upload to Cloud",
+                    tint = Color.White,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Upload", color = Color.White)
+            }
+
+            Button(
+                onClick = onDeleteClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                modifier = Modifier
+                    .height(36.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "Delete",
+                    tint = Color.White,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Delete", color = Color.White)
+            }
         }
     }
 }

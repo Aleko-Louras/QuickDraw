@@ -9,12 +9,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.graphics.Path
 import android.graphics.Paint
+import android.util.Log
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.storage
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 import java.io.File
 import kotlin.math.pow
 import java.io.FileOutputStream
 import java.util.Date
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
+import kotlin.random.Random
 
 // class of pen
 data class Pen(
@@ -47,6 +59,42 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     private val currentDrawingBitmap = MutableLiveData<Bitmap>()
 
     val drawingsList: LiveData<List<DrawingData>> = repository.getAllDrawings().asLiveData()
+
+    fun uploadDrawing(drawingData: DrawingData) {
+        val bitmap = currentDrawingBitmap.value
+
+        val storageReference = Firebase.storage.reference
+        val filePath = "${user?.uid}/${currentDrawingName}.png"
+
+        val baos = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.PNG, 0, baos)
+        val imageData = baos.toByteArray()
+
+        viewModelScope.launch {
+            try {
+                val successs = uploadData(storageReference, filePath, imageData)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    //returns whether the upload was successful
+    suspend fun uploadData(ref: StorageReference, path: String, data: ByteArray): Boolean {
+        val fileRef = ref.child(path)
+        return suspendCoroutine { continuation ->
+            val uploadTask = fileRef.putBytes(data)
+            uploadTask
+                .addOnFailureListener { e ->
+                    Log.e("PICUPLOAD", "Failed !$e")
+                    continuation.resume(false)
+                }
+                .addOnSuccessListener {
+                    Log.d("PICUPLOAD", "success")
+                    continuation.resume(true)
+                }
+        }
+    }
 
     // update the drawing if the drawing is already created
     suspend fun updateDrawing(fileName: String, filePath: String) {

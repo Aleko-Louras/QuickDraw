@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.quckdraw"
-        minSdk = 23
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -71,6 +71,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.1.1")
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage.ktx)
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
