@@ -16,6 +16,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.storage
 import kotlinx.coroutines.launch
@@ -64,11 +65,13 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         val bitmap = currentDrawingBitmap.value
 
         val storageReference = Firebase.storage.reference
-        val filePath = "${user?.uid}/${currentDrawingName}.png"
+        //val filePath = "${Firebase.auth.currentUser?.uid}/${currentDrawingName}.png"
+        val filePath = "${Firebase.auth.currentUser?.uid}/test.png"
 
         val baos = ByteArrayOutputStream()
         bitmap?.compress(Bitmap.CompressFormat.PNG, 0, baos)
-        val imageData = baos.toByteArray()
+        //val imageData = baos.toByteArray()
+        val imageData = generateBitmap()
 
         viewModelScope.launch {
             try {
@@ -94,6 +97,32 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
                     continuation.resume(true)
                 }
         }
+    }
+
+    fun generateBitmap(): ByteArray {
+        //draw a simple picture using a bitmap + canvas
+        val bitmap =
+            Bitmap.createBitmap(400, 400, Bitmap.Config.ARGB_8888, true)
+        val canvas = Canvas(bitmap)
+        val paint = Paint()
+        paint.color = Color.RED
+        canvas.drawCircle(
+            Random.nextFloat() * bitmap.width,
+            Random.nextFloat() * bitmap.height,
+            100f,
+            paint
+        )
+        paint.color = Color.BLUE
+        canvas.drawCircle(
+            Random.nextFloat() * bitmap.width,
+            Random.nextFloat() * bitmap.height,
+            150f,
+            paint
+        )
+        val baos = ByteArrayOutputStream()
+        //save it into PNG format (in memory, not a file)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, baos)
+        return baos.toByteArray() //bytes of the PNG
     }
 
     // update the drawing if the drawing is already created
