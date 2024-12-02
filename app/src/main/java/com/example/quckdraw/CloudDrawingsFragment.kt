@@ -19,7 +19,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -142,6 +144,9 @@ fun SharedDrawingItem(
             .padding(16.dp)
             .fillMaxWidth()
     ) {
+        var text by remember { mutableStateOf("") }
+
+
         // Display the image (if available)
         bitmap?.let {
             Image(
@@ -153,11 +158,15 @@ fun SharedDrawingItem(
                     .padding(bottom = 8.dp)
             )
             Button(
-                onClick = {viewModel.viewModelScope.launch{viewModel.createNewCloudDrawing("hi", it)}},
+                onClick = {viewModel.viewModelScope.launch{viewModel.createNewCloudDrawing(text, it)}},
                 modifier = Modifier.fillMaxWidth()
             ){
                 Text(text = "Download")
             }
+            OutlinedTextField(
+                value = text,
+                onValueChange = { text = it },
+                label = { Text("Save Drawing as") })
         }
     }
 
