@@ -76,7 +76,8 @@ fun DrawingListScreen(viewModel: DrawingViewModel) {
         } else {
             LazyColumn {
                 items(drawingUrls) { imageUrl ->
-                    SharedDrawingItem("drawings/a.png")
+                    Log.d("URLS", imageUrl)
+                    SharedDrawingItem(imageUrl)
                 }
             }
         }
@@ -115,7 +116,7 @@ fun SharedDrawingItem(
 }
 
 suspend fun downloadImage(ref: StorageReference, path: String): Bitmap? {
-    val fileRef = ref.child(path)
+    val fileRef = Firebase.storage.getReferenceFromUrl(path)
     return suspendCoroutine { continuation ->
         fileRef.getBytes(10 * 1024 * 1024) // 10 MB max size
             .addOnSuccessListener { bytes ->
