@@ -1,5 +1,6 @@
 package com.example.quckdraw
 
+import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -7,6 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,12 +30,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import com.example.quckdraw.databinding.FragmentCloudDrawingsBinding
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -53,6 +61,39 @@ class CloudDrawingsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    /**
+     * Helper function to show the dialog for creating a new drawing
+     */
+    private fun showCreateNewDrawingDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Enter drawing name")
+
+        val input = EditText(requireContext())
+        input.hint = "Drawing name"
+        builder.setView(input)
+
+        builder.setPositiveButton("Create") { dialog, _ ->
+            val drawingName = input.text.toString()
+            if (drawingName.isNotBlank()) {
+                // Create a new drawing with the specified name and save it
+                viewModel.viewModelScope.launch {
+                    if (viewModel.createNewDrawing(drawingName)) {
+                        //after the name is confirmed then navigate to display fragment
+                        findNavController().navigate(R.id.action_go_to_display_fragment)
+                    } else {
+                        Toast.makeText(context, "A drawing with this name already exists.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
     }
 
 }
@@ -77,7 +118,7 @@ fun DrawingListScreen(viewModel: DrawingViewModel) {
             LazyColumn {
                 items(drawingUrls) { imageUrl ->
                     Log.d("URLS", imageUrl)
-                    SharedDrawingItem(imageUrl)
+                    SharedDrawingItem(imageUrl, viewModel)
                 }
             }
         }
@@ -87,13 +128,13 @@ fun DrawingListScreen(viewModel: DrawingViewModel) {
 @Composable
 fun SharedDrawingItem(
     drawingPath: String,  // Path to the image in Firebase Storage
+    viewModel: DrawingViewModel
 ) {
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
-    val storageRef = Firebase.storage.reference
 
     // Load image asynchronously using a LaunchedEffect
     LaunchedEffect(drawingPath) {
-        bitmap = downloadImage(storageRef, drawingPath)
+        bitmap = downloadImage(drawingPath)
     }
 
     Column(
@@ -111,11 +152,18 @@ fun SharedDrawingItem(
                     .height(200.dp) // Adjust size as needed
                     .padding(bottom = 8.dp)
             )
+            Button(
+                onClick = {viewModel.viewModelScope.launch{viewModel.createNewCloudDrawing("hi", it)}},
+                modifier = Modifier.fillMaxWidth()
+            ){
+                Text(text = "Download")
+            }
         }
     }
+
 }
 
-suspend fun downloadImage(ref: StorageReference, path: String): Bitmap? {
+suspend fun downloadImage(path: String): Bitmap? {
     val fileRef = Firebase.storage.getReferenceFromUrl(path)
     return suspendCoroutine { continuation ->
         fileRef.getBytes(10 * 1024 * 1024) // 10 MB max size
@@ -129,5 +177,3 @@ suspend fun downloadImage(ref: StorageReference, path: String): Bitmap? {
             }
     }
 }
-
-

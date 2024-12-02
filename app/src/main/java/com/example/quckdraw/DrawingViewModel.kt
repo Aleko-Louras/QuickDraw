@@ -165,7 +165,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     }
 
     // save the file's drawing
-    suspend fun saveDrawing(fileName: String) {
+    fun saveDrawing(fileName: String) {
         repository.saveDrawing(fileName, _bitmap)
         //_drawings.value = repository.getAllDrawings().asLiveData().value
     }
@@ -185,6 +185,17 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
             put(fileName, _bitmap)
         }
         saveDrawing(fileName)
+        return true
+    }
+
+    suspend fun createNewCloudDrawing(fileName: String, drawing: Bitmap): Boolean{
+        if (!repository.isDrawingNameUnique(fileName) ) {
+            return false
+        }
+        _drawings.value = _drawings.value?.toMutableMap()?.apply {
+            put(fileName, drawing)
+        }
+        repository.saveDrawing(fileName, drawing)
         return true
     }
 
