@@ -39,6 +39,9 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.quckdraw.databinding.FragmentCloudDrawingsBinding
 import com.google.firebase.ktx.Firebase
@@ -62,12 +65,9 @@ class CloudDrawingsFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding = FragmentCloudDrawingsBinding.inflate(layoutInflater)
         binding.composeView2.setContent {
-            DrawingListScreen(viewModel)
-        }
-        binding.viewDrawingsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_back_to_drawing_list_fragment)
-        }
 
+            DrawingListScreen(viewModel, findNavController())
+        }
         return binding.root
     }
 
@@ -107,13 +107,16 @@ class CloudDrawingsFragment : Fragment() {
 }
 
 @Composable
-fun DrawingListScreen(viewModel: DrawingViewModel) {
+fun DrawingListScreen(viewModel: DrawingViewModel, navController: NavController) {
     viewModel.fetchDrawingUrls()
     val drawingUrls by viewModel.drawingUrls.observeAsState(emptyList())
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp)
     ) {
+        Button(modifier = Modifier, onClick = {navController.navigate(R.id.action_back_to_drawing_list_fragment)}){
+            Text(text = "Back")
+        }
         Text(
             text = "Shared Drawings",
             modifier = Modifier
