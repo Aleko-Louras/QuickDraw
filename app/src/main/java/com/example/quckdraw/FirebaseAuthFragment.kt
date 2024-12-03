@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -79,36 +80,40 @@ fun FirebaseAuthScreen(
 
         Button(
             onClick = {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            message = "Login successful!"
-                            onNavigateToDrawingList()
-                        } else {
-                            message = task.exception?.message ?: "Login failed."
+                if (email.isBlank() || password.isBlank()) {
+                    message = "Email and password cannot be empty."
+                } else {
+                    auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                onNavigateToDrawingList()
+                            } else {
+                                message = task.exception?.message ?: "Login failed."
+                            }
                         }
-                    }
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
         }
 
-
-
         Spacer(modifier = Modifier.height(100.dp))
 
         Button(
             onClick = {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            message = "Sign-up successful!"
-                            onNavigateToDrawingList()
-                        } else {
-                            message = task.exception?.message ?: "Sign-up failed."
+                if (email.isBlank() || password.isBlank()) {
+                    message = "Email and password cannot be empty."
+                } else {
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                onNavigateToDrawingList()
+                            } else {
+                                message = task.exception?.message ?: "Sign-up failed."
+                            }
                         }
-                    }
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -116,9 +121,9 @@ fun FirebaseAuthScreen(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
+        //message is only set if inputs are empty
         if (message.isNotEmpty()) {
-            Text(text = message, color = MaterialTheme.colorScheme.primary)
+            Text(text = message, color = Color.Red)
         }
     }
 }
