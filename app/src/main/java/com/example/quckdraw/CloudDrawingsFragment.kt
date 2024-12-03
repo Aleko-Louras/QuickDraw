@@ -64,6 +64,9 @@ class CloudDrawingsFragment : Fragment() {
         binding.composeView2.setContent {
             DrawingListScreen(viewModel)
         }
+        binding.viewDrawingsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_back_to_drawing_list_fragment)
+        }
 
         return binding.root
     }

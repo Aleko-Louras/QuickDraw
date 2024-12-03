@@ -61,4 +61,7 @@
         android:name="com.example.quckdraw.CloudDrawingsFragment"
         android:label="fragment_cloud_drawings"
         tools:layout="@layout/fragment_cloud_drawings" />
+        <action
+            android:id="@+id/action_back_to_drawing_list_fragment"
+            app:destination="@id/drawingListFragment" />
 </navigation>
