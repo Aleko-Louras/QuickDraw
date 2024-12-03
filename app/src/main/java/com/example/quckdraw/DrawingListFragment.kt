@@ -28,12 +28,15 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
@@ -171,19 +174,22 @@ fun DrawingListView(
 
         Button(
             onClick = onCreateNewDrawingClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
+            modifier = Modifier.fillMaxWidth()) {
             Text("Create New Drawing")
         }
-        Button(
-            onClick = onSignOutUser,
-            modifier = Modifier.fillMaxWidth()) {
-            Text("Sign Out")
-        }
+
         Button(
             onClick = onSharedClick,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             modifier = Modifier.fillMaxWidth()) {
             Text("Shared drawings")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = onSignOutUser,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+            modifier = Modifier.fillMaxWidth()) {
+            Text("Sign Out")
         }
     }
 }
@@ -208,7 +214,9 @@ fun DrawingItem(
             text = drawing.filename,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp) // Space between text and buttons
+                .padding(bottom = 8.dp), // Space between text and buttons
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
         )
 
         Row(

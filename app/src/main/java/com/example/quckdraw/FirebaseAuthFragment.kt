@@ -79,25 +79,6 @@ fun FirebaseAuthScreen(
 
         Button(
             onClick = {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            message = "Sign-up successful!"
-                            onNavigateToDrawingList()
-                        } else {
-                            message = task.exception?.message ?: "Sign-up failed."
-                        }
-                    }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Sign Up")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(
-            onClick = {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -111,6 +92,27 @@ fun FirebaseAuthScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
+        }
+
+
+
+        Spacer(modifier = Modifier.height(100.dp))
+
+        Button(
+            onClick = {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            message = "Sign-up successful!"
+                            onNavigateToDrawingList()
+                        } else {
+                            message = task.exception?.message ?: "Sign-up failed."
+                        }
+                    }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Sign Up")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
