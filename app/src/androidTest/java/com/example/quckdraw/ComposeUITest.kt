@@ -1,7 +1,7 @@
 package com.example.quckdraw
 
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Rule
 import org.junit.Test
 import java.util.Date
@@ -21,7 +21,11 @@ class ComposeUITest {
                 ),
                 onDrawingClick = {},
                 onDeleteClick = {},
-                onCreateNewDrawingClick = {}
+                onCreateNewDrawingClick = {},
+                onSignOutUser = {},
+                onSharedClick = {},
+                onUploadClick = {}
+
             )
         }
 
@@ -44,7 +48,8 @@ class ComposeUITest {
             DrawingItem(
                 drawing = mockDrawing,
                 onClick = {},
-                onDeleteClick = {}
+                onDeleteClick = {},
+                onUploadClick = {}
             )
         }
 
@@ -68,13 +73,70 @@ class ComposeUITest {
                 ),
                 onDrawingClick = {},
                 onDeleteClick = {},
-                onCreateNewDrawingClick = {}
+                onUploadClick = {},
+                onCreateNewDrawingClick = {},
+                onSignOutUser = {},
+                onSharedClick = {}
             )
         }
         composeTestRule.onAllNodesWithText("Delete")[0].performClick()
         composeTestRule.onNodeWithText("Mock Drawing").assertDoesNotExist()
 
 
+    }
+    @Test
+    fun testUpload() {
+        var isuploadClicked: DrawingData? = null
+        val mockDrawing = DrawingData("drawing1", "/path/to/drawing1", timestamp = Date())
+
+        composeTestRule.setContent {
+            DrawingItem(
+                drawing = mockDrawing,
+                onClick = {},
+                onDeleteClick = {},
+                onUploadClick = { isuploadClicked = mockDrawing }
+            )
+        }
+
+        composeTestRule.onNodeWithText("Upload").performClick()
+        assert(isuploadClicked == mockDrawing)
+    }
+    @Test
+    fun testSignOut() {
+        var issignOutClicked = false
+
+        composeTestRule.setContent {
+            DrawingListView(
+                drawings = emptyList(),
+                onDrawingClick = {},
+                onDeleteClick = {},
+                onUploadClick = {},
+                onCreateNewDrawingClick = {},
+                onSignOutUser = { issignOutClicked = true },
+                onSharedClick = {}
+            )
+        }
+
+        composeTestRule.onNodeWithText("Sign Out").performClick()
+        assert(issignOutClicked)
+    }
+    @Test
+    fun testSharedDrawings() {
+        var issharedClicked = false
+
+        composeTestRule.setContent {
+            DrawingListView(
+                drawings = emptyList(),
+                onDrawingClick = {},
+                onDeleteClick = {},
+                onUploadClick = {},
+                onCreateNewDrawingClick = {},
+                onSignOutUser = {},
+                onSharedClick = { issharedClicked = true }
+            )
+        }
+        composeTestRule.onNodeWithText("Shared drawings").performClick()
+        assert(issharedClicked)
     }
 
 
