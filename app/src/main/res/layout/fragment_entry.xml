@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="#654F9F"
     tools:context="com.example.quckdraw.EntryFragment">
 
 
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Welcome to QuickDraw"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="24sp" />
 
 </LinearLayout>
