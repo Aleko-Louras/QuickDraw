@@ -90,8 +90,6 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
         val bitmap = currentDrawingBitmap.value
 
         val storageReference = Firebase.storage.reference
-        //val filePath = "${Firebase.auth.currentUser?.uid}/${currentDrawingName}.png"
-        //val filePath = "drawings/${Firebase.auth.currentUser?.uid}/${currentDrawingName}.png"
         val filePath = "drawings/${currentDrawingName}.png"
 
 
@@ -101,7 +99,7 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
 
         viewModelScope.launch {
             try {
-                val successs = uploadData(storageReference, filePath, imageData)
+                uploadData(storageReference, filePath, imageData)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

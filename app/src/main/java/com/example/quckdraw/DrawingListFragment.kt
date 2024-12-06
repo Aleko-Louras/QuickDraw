@@ -82,6 +82,8 @@ class DrawingListFragment : Fragment() {
                         viewModel.loadDrawing(drawing.filename)
                         viewModel.uploadDrawing(drawing)
                     }
+                    Toast.makeText(context, "Drawing uploaded", Toast.LENGTH_SHORT).show()
+
                 },
                 onCreateNewDrawingClick = {
                     showCreateNewDrawingDialog()
