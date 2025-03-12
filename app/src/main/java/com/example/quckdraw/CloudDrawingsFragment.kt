@@ -3,6 +3,7 @@ package com.example.quckdraw
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -158,6 +159,7 @@ fun SharedDrawingItem(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
+            .background(color = androidx.compose.ui.graphics.Color.Black)
     ) {
         var text by remember { mutableStateOf("") }
 
@@ -170,7 +172,7 @@ fun SharedDrawingItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp) // Adjust size as needed
-                    .padding(bottom = 8.dp)
+                    .padding(bottom = 8.dp, top = 8.dp)
             )
             Button(
                 onClick = {
@@ -189,6 +191,10 @@ fun SharedDrawingItem(
                 Text(text = "Download")
             }
             OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+
                 value = text,
                 onValueChange = { text = it },
                 label = { Text("Save Drawing as") })
